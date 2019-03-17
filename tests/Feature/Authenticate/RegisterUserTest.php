@@ -57,4 +57,10 @@ class RegisterUserTest extends TestCase {
 
     # </editor-fold>
 
+
+    /** @test */
+    public function it_store_new_customer_into_database_and_return_access_token_to_front_end()
+    {
+
+    }
 }
