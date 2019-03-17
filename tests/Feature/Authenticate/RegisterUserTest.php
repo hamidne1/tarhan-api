@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Authenticate;
 
-use App\Models\Token;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -79,18 +78,16 @@ class RegisterUserTest extends TestCase {
     # </editor-fold>
 
     /** @test */
-    public function it_store_new_customer_into_database_and_return_access_token_to_the_front_end()
+    public function it_store_new_customer_into_database()
     {
-        $this->withoutExceptionHandling();
         $this->setData()
             ->register()
             ->assertStatus(201)
             ->assertJsonStructure([
-                'data'
+                'message'
             ]);
 
         $this->assertDatabaseHas('users', $this->data);
-        $this->assertCount(1, Token::all());
     }
 
 

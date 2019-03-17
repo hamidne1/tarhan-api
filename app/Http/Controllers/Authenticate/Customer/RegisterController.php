@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Authenticate\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller {
 
@@ -24,15 +24,12 @@ class RegisterController extends Controller {
             'name' => 'required',
         ]);
 
-        DB::beginTransaction();
         try {
             User::create($validated);
 
-            DB::commit();
             return $this->respondCreated('ثبت نام با موفقیت انجام گرفت');
-        } catch (\Exception $e) {
-            \Log::critical('Error in: user.store: ' . $e->getMessage());
-            \DB::rollBack();
+        } catch (\Exception $exception) {
+            Log::critical('Error in: customer.register: ' . $exception->getMessage());
 
             return $this->respondInternalError('یک خطای سرور رخ داده است.');
         }
