@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @group Authenticate
+ * @group Register Customer
  *
  * Class RegisterController
  *

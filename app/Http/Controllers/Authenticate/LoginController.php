@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 
 /**
- * @group Authenticate
+ * @group Login Customer
  *
  * Class LoginController
  *
@@ -60,8 +60,8 @@ class LoginController extends Controller {
 
 
     /**
-     *  login
-     * login the customer in to thw application
+     * Login
+     * Login the customer in to thw application
      *
      *  @bodyParam mobile string required The mobile of the customer.
      *
@@ -81,8 +81,8 @@ class LoginController extends Controller {
 
 
     /**
-     * verify
-     * verify the customer verify code for login
+     * Verify
+     * Verify the customer verify_code for login
      *
      * @bodyParam mobile string required The mobile of the customer.
      * @bodyParam verify_code integer required the verify code that sended to mobile
@@ -119,8 +119,8 @@ class LoginController extends Controller {
 
 
     /**
-     * logout
-     * logout the customer
+     * Logout
+     * Logout the customer from home
      *
      * @return \Illuminate\Http\JsonResponse
      */

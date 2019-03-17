@@ -6,6 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomerResource;
 use Illuminate\Http\Request;
 
+/**
+ * @group Customer
+ *
+ * Class CustomerController
+ *
+ * @package App\Http\Controllers\Authenticate
+ */
 class CustomerController extends Controller {
 
     /**
@@ -17,7 +24,8 @@ class CustomerController extends Controller {
     }
 
     /**
-     * return user if has logged in
+     * Customer
+     * Get the authenticated customer
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
