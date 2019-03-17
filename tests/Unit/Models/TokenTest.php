@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Token;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,6 +19,11 @@ class TokenTest extends TestCase {
     protected $token;
 
     /**
+     * @var User $user
+     */
+    protected $user;
+
+    /**
      * Setup the test environment.
      *
      * @return void
@@ -25,7 +31,12 @@ class TokenTest extends TestCase {
     protected function setUp(): void
     {
         parent::setUp();
-        $this->token = create(Token::class);
+
+        $this->user = create(User::class);
+
+        $this->token = create(Token::class, [
+            'user_id' => $this->user->id
+        ]);
     }
 
     /** @test */
@@ -74,14 +85,8 @@ class TokenTest extends TestCase {
     /** @test */
     public function it_belongs_to_a_user()
     {
-        $user = create('App\Models\User');
-
-        $token = create(Token::class, [
-            'user_id' => $user->id
-        ]);
-
         $this->assertEquals(
-            $user->toArray(), array_intersect($token->user->toArray(), $user->toArray())
+            $this->token->user->id, $this->user->id
         );
     }
 

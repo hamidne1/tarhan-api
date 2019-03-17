@@ -7,7 +7,7 @@ $factory->define(\App\Models\Token::class, function (Faker $faker) {
         'user_id' => function () {
             return factory(\App\Models\User::class);
         },
-        'access_token' => str_random(60),
+        'access_token' => \Illuminate\Support\Str::random(60),
         'expire_at' => \Carbon\Carbon::now()
     ];
 });

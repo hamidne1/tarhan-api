@@ -7,6 +7,8 @@ namespace App\Models;
  *
  * @property integer id
  *
+ * @property User user
+ *
  * @method static |Token create($data)
  * @method static|\Illuminate\Database\Eloquent\Builder where($column, $operator = null, $value = null, $boolean = 'and')
  */
@@ -31,6 +33,6 @@ class Token extends Model {
         return $this->belongsTo(User::class);
     }
 
-    # </editor-fold>∑
+    # </editor-fold>
 }
 
