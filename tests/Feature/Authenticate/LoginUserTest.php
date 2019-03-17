@@ -103,7 +103,7 @@ class LoginUserTest extends TestCase {
             'verify_code' => 9999
         ])->verify()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('verify_code');
+            ->assertJsonValidationErrors('mobile');
     }
 
     # </editor-fold>
@@ -138,12 +138,12 @@ class LoginUserTest extends TestCase {
             $this->setData([
                 'mobile' => $user->mobile,
                 'verify_code' => 9999
-            ])->login();
+            ])->verify();
 
         $this->setData([
             'mobile' => $user->mobile,
-            'password' => 4545
-        ])->login()
+            'verify_code' => 4545
+        ])->verify()
             ->assertStatus(429)
             ->assertJsonValidationErrors('mobile');
     }
