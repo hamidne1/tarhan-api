@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Token;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -55,19 +56,24 @@ class UserTest extends TestCase {
     /** @test */
     public function it_has_many_tokens()
     {
-        $token = create('App\Models\Token', [
+        $tokens = create(Token::class, [
             'user_id' => $this->user->id
-        ]);
+        ], 2);
 
-        $this->assertTrue($this->user->tokens->contains($token));
-
+        $tokens->each(function ($token) {
+            $this->assertTrue(
+                $this->user->tokens->contains($token)
+            );
+        });
     }
 
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
 
-    /** @test */
+    /** @test
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function it_hash_the_user_password_for_saving_into_database()
     {
         $hash = $this->app->make('hash');
