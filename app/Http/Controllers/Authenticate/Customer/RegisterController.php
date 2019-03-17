@@ -7,13 +7,25 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @group Authenticate
+ *
+ * Class RegisterController
+ *
+ * @package App\Http\Controllers\Authenticate\Customer
+ */
 class RegisterController extends Controller {
 
 
     /**
-     * register new user into database
+     * Register
+     * Register new customer into database
+     *
+     * @bodyParam mobile string required The mobile of the customer.
+     * @bodyParam name string required The name of the customer.
      *
      * @param Request $request
+     *
      * @return mixed
      * @throws \Illuminate\Validation\ValidationException
      */

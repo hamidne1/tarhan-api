@@ -51,7 +51,7 @@ class LoginUserTest extends TestCase {
     protected function verify()
     {
         return $this->postJson(
-            route('login.verify'), $this->data
+            route('customer.login.verify'), $this->data
         );
     }
 
@@ -139,7 +139,6 @@ class LoginUserTest extends TestCase {
             ->assertStatus(429)
             ->assertJsonValidationErrors('mobile');
     }
-
 
     /** @test */
     public function it_logged_out_and_remove_token()
