@@ -17,6 +17,6 @@ $factory->define(\App\Models\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'mobile' => $faker->regexify('/^09\d{9}'),
-        'verify_code' => rand(1000, 9999)
+        'verify_code' => null
     ];
 });

@@ -85,7 +85,7 @@ class RegisterUserTest extends TestCase {
             ->register()
             ->assertStatus(201)
             ->assertJsonStructure([
-                'data'
+                'message'
             ]);
 
         $this->assertDatabaseHas('users', $this->data);
