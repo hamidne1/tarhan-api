@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RegisterUserTest extends TestCase {
+
     use RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
@@ -38,7 +39,7 @@ class RegisterUserTest extends TestCase {
     protected function register()
     {
         return $this->postJson(
-            route('register'), $this->data
+            route('customer.register'), $this->data
         );
     }
 
@@ -58,6 +59,12 @@ class RegisterUserTest extends TestCase {
             ->register()
             ->assertStatus(422)
             ->assertJsonValidationErrors('mobile');
+
+        $this->setData([
+            'mobile' => create(User::class)->mobile
+        ])->register()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('mobile');
     }
 
     /** @test */
@@ -74,6 +81,7 @@ class RegisterUserTest extends TestCase {
     /** @test */
     public function it_store_new_customer_into_database_and_return_access_token_to_the_front_end()
     {
+        $this->withoutExceptionHandling();
         $this->setData()
             ->register()
             ->assertStatus(201)

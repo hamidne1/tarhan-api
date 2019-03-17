@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', function () {
-    return 'Ok';
+Route::group(['namespace' => 'Authenticate'], function () {
+
+    Route::group(['namespace' => 'Customer'], function () {
+
+        Route::post('register', 'RegisterController@register')->name('customer.register');
+
+    });
+
 });
