@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\ValidationException;
 
+
+/**
+ * @group Authenticate
+ *
+ * Class LoginController
+ *
+ * @package App\Http\Controllers\Authenticate\Customer
+ */
+
 class LoginController extends Controller {
 
     use ThrottlesLogins;
@@ -47,8 +56,14 @@ class LoginController extends Controller {
         return 'mobile';
     }
 
+
+
+
     /**
-     * login the customer
+     *  login
+     * login the customer in to thw application
+     *
+     *  @bodyParam mobile string required The mobile of the customer.
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -66,7 +81,11 @@ class LoginController extends Controller {
 
 
     /**
+     * verify
      * verify the customer verify code for login
+     *
+     * @bodyParam mobile string required The mobile of the customer.
+     * @bodyParam verify_code integer required the verify code that sended to mobile
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -100,7 +119,8 @@ class LoginController extends Controller {
 
 
     /**
-     * logout customer
+     * logout
+     * logout the customer
      *
      * @return \Illuminate\Http\JsonResponse
      */
