@@ -79,9 +79,8 @@ class RegisterUserTest extends TestCase {
     # </editor-fold>
 
     /** @test */
-    public function it_store_new_customer_into_database_and_return_access_token_to_the_front_end()
+    public function it_store_new_customer_into_database()
     {
-        $this->withoutExceptionHandling();
         $this->setData()
             ->register()
             ->assertStatus(201)
@@ -90,7 +89,6 @@ class RegisterUserTest extends TestCase {
             ]);
 
         $this->assertDatabaseHas('users', $this->data);
-        $this->assertCount(1, Token::all());
     }
 
 
