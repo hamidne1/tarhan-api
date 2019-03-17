@@ -37,7 +37,7 @@ if (!function_exists('raw')) {
      * @param string $class
      * @param array $attribute
      * @param null $times
-     * @return mixed
+     * @return array
      */
     function raw(string $class, array $attribute = [], $times = null)
     {
