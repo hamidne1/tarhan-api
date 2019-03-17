@@ -72,19 +72,5 @@ class UserTest extends TestCase {
 
     # </editor-fold>
 
-    #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
-
-    /** @test
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function it_hash_the_user_password_for_saving_into_database()
-    {
-        $hash = $this->app->make('hash');
-        $this->assertTrue(
-            $hash->check('password', $this->user->getAuthPassword())
-        );
-    }
-
-    # </editor-fold>
 
 }
