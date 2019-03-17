@@ -17,8 +17,10 @@ use Faker\Generator as Faker;
 $factory->define(\App\Models\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
+        'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
+        'mobile' => $faker->regexify('/^09\d{9}'),
         'password' => 'password',
         'remember_token' => Str::random(10),
     ];
