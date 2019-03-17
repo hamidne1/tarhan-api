@@ -25,4 +25,6 @@ Route::group(['namespace' => 'Authenticate'], function () {
 
     });
 
+    Route::get('customer', 'CustomerController@index')->name('customer');
+
 });
