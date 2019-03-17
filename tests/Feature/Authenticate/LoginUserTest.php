@@ -74,27 +74,36 @@ class LoginUserTest extends TestCase {
     }
 
     /** @test */
-    public function it_required_verify_key_for_verify_login_user()
+    public function it_required_verify_code_for_verify_login_user()
     {
-        $this->setData(['verify_key' => null])
+        $this->setData(['verify_code' => null])
             ->verify()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('verify_key');
+            ->assertJsonValidationErrors('verify_code');
     }
 
     /** @test */
-    public function it_required_the_valid_verify_key_for_logged_user()
+    public function it_required_mobile_for_verify_login_user()
+    {
+        $this->setData(['mobile' => null])
+            ->verify()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('mobile');
+    }
+
+    /** @test */
+    public function it_required_the_valid_verify_code_for_logged_user()
     {
         $user = create(User::class, [
-            'verify_key' => 4578
+            'verify_code' => 4578
         ]);
 
         $this->setData([
             'mobile' => $user->mobile,
-            'verify_key' => 9999
+            'verify_code' => 9999
         ])->verify()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('verify_key');
+            ->assertJsonValidationErrors('verify_code');
     }
 
     # </editor-fold>
@@ -116,7 +125,6 @@ class LoginUserTest extends TestCase {
             ]);
 
         $this->assertCount(1, $user->tokens);
-        $this->assertAuthenticatedAs($user, 'customer');
     }
 
     /** @test */
@@ -144,7 +152,7 @@ class LoginUserTest extends TestCase {
     public function it_logged_out_and_remove_token()
     {
         $this->customerLogin()
-            ->postJson(route('logout'))
+            ->postJson(route('customer.logout'))
             ->assertStatus(200);
 
         $this->assertFalse($this->isAuthenticated());
