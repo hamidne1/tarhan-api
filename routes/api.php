@@ -20,6 +20,10 @@ Route::group(['namespace' => 'Authenticate'], function () {
 
         Route::post('register', 'RegisterController@register')->name('customer.register');
 
+        Route::post('login','LoginController@login')->name('customer.login');
+
+        Route::post('verify','VerifyController@verify')->name('login.verify');
+
     });
 
 });

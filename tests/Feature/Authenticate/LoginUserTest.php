@@ -39,7 +39,7 @@ class LoginUserTest extends TestCase {
     protected function login()
     {
         return $this->postJson(
-            route('login'), $this->data
+            route('customer.login'), $this->data
         );
     }
 
@@ -60,7 +60,7 @@ class LoginUserTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
     /** @test */
-    public function it_required_the_valid_mobile()
+    public function it_required_the_valid_mobile_for_login()
     {
         $this->setData(['mobile' => null,])
             ->login()
