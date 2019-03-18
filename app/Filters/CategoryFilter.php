@@ -4,6 +4,6 @@
 namespace App\Filters;
 
 
-class CategoryFilter {
+class CategoryFilter extends AbstractFilters {
 
 }
