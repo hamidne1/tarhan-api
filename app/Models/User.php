@@ -45,19 +45,6 @@ class User extends Authenticatable {
 
     # </editor-fold>
 
-    #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
-
-    /**
-     * hash the password attribute
-     *
-     * @param $value
-     */
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
-
-    # </editor-fold>
 
 
 }

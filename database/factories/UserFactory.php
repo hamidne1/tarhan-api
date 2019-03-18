@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 /*
@@ -17,9 +16,7 @@ use Faker\Generator as Faker;
 $factory->define(\App\Models\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => 'password',
-        'remember_token' => Str::random(10),
+        'mobile' => $faker->regexify('/^09\d{9}'),
+        'verify_code' => null
     ];
 });

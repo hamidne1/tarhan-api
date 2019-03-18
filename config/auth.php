@@ -38,7 +38,7 @@ return [
         'customer' => [
             'driver' => 'access_token',
             'provider' => 'users',
-        ]
+        ],
     ],
 
     /*
