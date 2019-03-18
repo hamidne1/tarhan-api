@@ -37,11 +37,20 @@ class LoginController extends Controller {
     protected $decayMinutes = 2;
 
     /**
+     * the register user construct
+     *
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    /**
      * provider the guard
      *
      * @return mixed
      */
-    public function guard()
+    protected function guard()
     {
         return Auth::guard('customer');
     }
