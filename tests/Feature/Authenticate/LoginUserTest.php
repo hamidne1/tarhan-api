@@ -16,7 +16,7 @@ class LoginUserTest extends TestCase {
     /**
      * @var $data
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * set data property
@@ -55,6 +55,18 @@ class LoginUserTest extends TestCase {
         );
     }
 
+    /**
+     * send the request to logout the user
+     *
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    protected function logout()
+    {
+        return $this->postJson(
+            route('customer.logout')
+        );
+    }
+
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="Security">   ##----------------------------------------------------#
@@ -65,9 +77,26 @@ class LoginUserTest extends TestCase {
         $this->customerLogin()
             ->login()
             ->assertStatus(200)
-            ->assertJsonStructure([
+            ->assertExactJson([
                 'message' => 'already authorized ..!'
             ]);
+    }
+
+    /** @test */
+    public function an_authenticated_customer_can_not_verify_again()
+    {
+        $this->customerLogin()
+            ->verify()
+            ->assertStatus(200)
+            ->assertExactJson([
+                'message' => 'already authorized ..!'
+            ]);
+    }
+
+    /** @test */
+    public function only_authenticated_customer_can_logout_from_dashboard()
+    {
+        $this->logout()->assertStatus(401);
     }
 
     # </editor-fold>
@@ -167,7 +196,7 @@ class LoginUserTest extends TestCase {
     public function it_logged_out_and_remove_token()
     {
         $this->customerLogin()
-            ->postJson(route('customer.logout'))
+            ->logout()
             ->assertStatus(200);
 
         $this->assertFalse($this->isAuthenticated());
