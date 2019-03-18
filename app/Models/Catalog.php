@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-class Catalog extends Model
-{
+class Catalog extends Model {
     /**
      * {@inheritDoc}
      */
@@ -13,7 +12,7 @@ class Catalog extends Model
      * {@inheritDoc}
      */
     protected $guarded = [
-        'id', 'slug', 'catalog_id'
+        'id', 'slug'
     ];
 
     #-------------------------------------##   <editor-fold desc="Booting">   ##----------------------------------------------------#
@@ -25,28 +24,12 @@ class Catalog extends Model
     {
         parent::boot();
 
-        static::creating(function ($category) {
-            $category->slug = $category->label;
+        static::creating(function ($catalog) {
+            $catalog->slug = $catalog->label;
         });
-        static::updating(function ($category) {
-            $category->slug = $category->label;
+        static::updating(function ($catalog) {
+            $catalog->slug = $catalog->label;
         });
-    }
-
-    # </editor-fold>
-
-    #-------------------------------------##   <editor-fold desc="The Scoping">   ##----------------------------------------------------#
-
-    /**
-     * send builder to filter object and apply that
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \App\Filters\CategoryFilter $filters
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeFilter($query, \App\Filters\CategoryFilter $filters)
-    {
-        return $filters->apply($query);
     }
 
     # </editor-fold>
@@ -54,13 +37,29 @@ class Catalog extends Model
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
     /**
-     * category catalog
+     * catalog categories
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function catalog()
+    public function categories()
     {
-        return $this->belongsTo(Catalog::class);
+        return $this->hasMany(Category::class);
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Methods">   ##----------------------------------------------------#
+
+    /**
+     * catalog categories
+     *
+     * @param array $data
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function addCategory(array $data)
+    {
+        return $this->categories()
+            ->create($data);
     }
 
     # </editor-fold>
@@ -68,7 +67,7 @@ class Catalog extends Model
     #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
 
     /**
-     * create slug from the label of category
+     * create slug from the label of catalog
      */
     public function setSlugAttribute()
     {
