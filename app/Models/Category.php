@@ -28,7 +28,7 @@ class Category extends Model {
      * {@inheritDoc}
      */
     protected $guarded = [
-        'id', 'slug', 'level', 'parent_id'
+        'id', 'slug', 'catalog_id'
     ];
 
     #-------------------------------------##   <editor-fold desc="Booting">   ##----------------------------------------------------#
@@ -42,18 +42,9 @@ class Category extends Model {
 
         static::creating(function ($category) {
             $category->slug = $category->label;
-
-            $category->level = $category->parent_id
-                ? static::findOrFail($category->parent_id)->level + 1
-                : 1;
         });
-//        static::updating(function ($category) {
-//            $category->slug = $category->label; //TODO: think about this if need to chnage slug
-//        });
-        static::deleted(function ($category) {
-            foreach (\Illuminate\Support\Collection::wrap($category->children()->get()) as $child)
-                /** @var static $child */
-                $child->delete();
+        static::updating(function ($category) {
+            $category->slug = $category->label;
         });
     }
 
@@ -78,44 +69,14 @@ class Category extends Model {
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
     /**
-     * category parent
+     * category catalog
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function parent()
+    public function catalog()
     {
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this->belongsTo(Catalog::class);
     }
-
-    /**
-     * category children
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function children()
-    {
-        return $this->hasMany(self::class, 'parent_id');
-    }
-
-    # </editor-fold>
-
-    #-------------------------------------##   <editor-fold desc="The Methods">   ##----------------------------------------------------#
-
-
-    /**
-     * add new category to category
-     *
-     * @param $category
-     * @param $parent_id
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public static function addCategory($category, $parent_id = null)
-    {
-        return $parent_id
-            ? static::findOrFail($parent_id)->children()->create($category)
-            : static::create($category);
-    }
-
 
     # </editor-fold>
 
