@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CatalogResource;
 use App\Models\Catalog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Catalogs
@@ -96,14 +97,22 @@ class CatalogsController extends Controller {
      */
     public function destroy($id)
     {
-        $catalog = Catalog::findOrFail($id);
+        try {
+            $catalog = Catalog::findOrFail($id);
 
-        if ($catalog->hasCategory()) {
-            return $this->respondInternalError('به دلیل وجود چندین گروه در این کاتالوگ امکان حذف وجود ندارد');
+            if ($catalog->hasCategory()) {
+                Log::info('An Admin want to delete a catalog! but there is some category into that catalog. :)');
+
+                return $this->respondInternalError('به دلیل وجود چندین گروه در این کاتالوگ امکان حذف وجود ندارد');
+            }
+
+            $catalog->delete();
+            return $this->respondDeleted();
+
+        } catch (\Exception $e) {
+            Log::error("Error in Delete Category:" . $e->getMessage());
+
+            return $this->respondInternalError('خطایی رخ داده است٬ منتظر بررسی برنامه نویس بمانید');
         }
-
-        $catalog->delete();
-
-        return $this->respondDeleted();
     }
 }
