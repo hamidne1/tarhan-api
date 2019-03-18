@@ -119,8 +119,20 @@ class CatalogTest extends TestCase {
         $this->assertCount(1, $this->catalog->categories);
     }
 
-    # </editor-fold>
+    /** @test */
+    public function it_check_has_category_state()
+    {
+        $this->catalog->addCategory(
+            raw(Category::class)
+        );
 
+        $anotherCatalog = create(Catalog::class);
+
+        $this->assertTrue($this->catalog->hasCategory());
+        $this->assertFalse($anotherCatalog->hasCategory());
+    }
+
+    # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
 

@@ -2,6 +2,18 @@
 
 namespace App\Models;
 
+/**
+ *
+ * @property integer id
+ * @property integer title
+ * @property integer label
+ * @property integer slug
+ *
+ * @property \Illuminate\Support\Collection categories
+ *
+ * @method static |Catalog create(array $data)
+ * @method static |Catalog findOrFail(int $id)
+ */
 class Catalog extends Model {
     /**
      * {@inheritDoc}
@@ -60,6 +72,16 @@ class Catalog extends Model {
     {
         return $this->categories()
             ->create($data);
+    }
+
+    /**
+     * Check catalog category exists or not
+     *
+     * @return bool
+     */
+    public function hasCategory()
+    {
+        return !!$this->categories()->exists();
     }
 
     # </editor-fold>

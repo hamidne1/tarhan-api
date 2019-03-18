@@ -6,9 +6,26 @@ use App\Http\Resources\CatalogResource;
 use App\Models\Catalog;
 use Illuminate\Http\Request;
 
+/**
+ * @group Catalogs
+ *
+ * Class CatalogsController
+ *
+ * @package App\Http\Controllers
+ */
 class CatalogsController extends Controller {
+
     /**
-     * Display a listing of the resource.
+     * CatalogsController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:admin')->except('index');
+    }
+
+    /**
+     * Index
+     * Display a listing of the catalog resources.
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
@@ -20,7 +37,11 @@ class CatalogsController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store
+     * Store a newly created catalog resource in storage.
+     *
+     * @bodyParam title string required The UNIQUE title of the catalog.
+     * @bodyParam label string required The UNIQUE label of the catalog.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -35,14 +56,18 @@ class CatalogsController extends Controller {
 
         $catalog = Catalog::create($validated);
 
-        return $this->respond(
+        return $this->respondCreated(
             'یک کاتالوگ جدید ایجاد شد', new CatalogResource($catalog)
         );
     }
 
 
     /**
-     * Update the specified resource in storage.
+     * Update
+     * Update a exists created catalog resource
+     *
+     * @bodyParam title string required The UNIQUE title of the catalog.
+     * @bodyParam label string required The UNIQUE label of the catalog.
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
@@ -52,11 +77,12 @@ class CatalogsController extends Controller {
     public function update(Request $request, $id)
     {
         $validated = $this->validate($request, [
-            'title' => 'required|unique:catalogs',
-            'label' => 'required|unique:catalogs'
+            'title' => 'required|unique:catalogs,title,' . $id,
+            'label' => 'required|unique:catalogs,label,' . $id
         ]);
 
-        Catalog::findOrFail($id)->update($validated);
+        Catalog::findOrFail($id)
+            ->update($validated);
 
         return $this->respond('بروزرسانی با موفقیت انجام شد');
     }
@@ -65,7 +91,8 @@ class CatalogsController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return bool
+     * @throws \Exception
      */
     public function destroy($id)
     {
