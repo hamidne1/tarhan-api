@@ -47,6 +47,26 @@ class EditCatalogTest extends TestCase {
 
     # </editor-fold>
 
+    #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
+
+    /** @test */
+    public function an_guest_can_not_edit_catalog()
+    {
+        $this->putJson(
+            route('catalog.update', 1), []
+        )->assertStatus(401);
+    }
+
+    /** @test */
+    public function an_authenticated_customer_can_not_edit_catalog()
+    {
+        $this->customerLogin()->putJson(
+            route('catalog.update', 1), []
+        )->assertStatus(401);
+    }
+
+    # </editor-fold>
+
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
     /** @test */

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CreateCatalogTest extends TestCase {
+
     use RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
@@ -36,9 +37,29 @@ class CreateCatalogTest extends TestCase {
      */
     protected function store()
     {
-        return $this->postJson(
+        return $this->adminLogin()->postJson(
             route('catalogs.store'), $this->data
         );
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
+
+    /** @test */
+    public function an_guest_can_not_create_new_catalog()
+    {
+        $this->postJson(
+            route('catalog.store'), []
+        )->assertStatus(401);
+    }
+
+    /** @test */
+    public function an_authenticated_customer_can_not_create_new_catalog()
+    {
+        $this->customerLogin()->postJson(
+            route('catalog.store'), []
+        )->assertStatus(401);
     }
 
     # </editor-fold>
