@@ -28,9 +28,9 @@ Route::group(['namespace' => 'Authenticate'], function () {
 
     #--------------------------------##   <editor-fold desc="Admin Authenticate Routes">   ##--------------------------------------------#
 
-//    Route::post('admin-login', 'AdminLoginController@login')->name('admin.login');
-//    Route::post('admin-logout', 'AdminLoginController@logout')->name('admin.logout');
-//    Route::get('admin', 'AdminController@index')->name('admin');
+    Route::post('admin-login', 'AdminLoginController@login')->name('admin.login');
+    Route::post('admin-logout', 'AdminLoginController@logout')->name('admin.logout');
+    Route::get('admin', 'AdminController@index')->name('admin');
 
     # </editor-fold>
 
