@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class EditCatalogTest extends TestCase {
+
     use RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#

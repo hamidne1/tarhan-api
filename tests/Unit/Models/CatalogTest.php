@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CatalogTest extends TestCase {
+
     use WithFaker, RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#

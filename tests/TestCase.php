@@ -24,4 +24,19 @@ abstract class TestCase extends BaseTestCase {
         return $this;
     }
 
+    /**
+     * custom authenticate wrap method for admin guard
+     *
+     * @param null $admin
+     * @return $this
+     */
+    protected function adminLogin($admin = null)
+    {
+        $admin = $admin ?: create(User::class);
+
+        $this->be($admin, 'admin');
+
+        return $this;
+    }
+
 }
