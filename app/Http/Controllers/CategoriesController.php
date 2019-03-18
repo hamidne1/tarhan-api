@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Contents;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 
@@ -60,7 +59,8 @@ class CategoriesController extends Controller {
             'catalog_id' => 'required|exists:catalogs,id'
         ]);
 
-        $category = Category::create($validated);
+        $category = \App\Models\Catalog::findOrFail($validated['catalog_id'])
+            ->addCategory($validated);
 
         return $this->respondCreated(
             'دسته بندی جدید ایجاد شد', new CategoryResource($category)
@@ -97,13 +97,13 @@ class CategoriesController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function destroy($id)
     {
         Category::findOrFail($id)->delete();
 
-        $this->respondDeleted();
+        return $this->respondDeleted();
     }
 }
