@@ -16,11 +16,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Authenticate'], function () {
 
-    # Customer authenticate routes
+    #--------------------------------##   <editor-fold desc="Customer Authenticate Routes">   ##--------------------------------------------#
+
     Route::post('register', 'RegisterController@register')->name('customer.register');
     Route::post('login', 'LoginController@login')->name('customer.login');
     Route::post('login/verify', 'LoginController@verify')->name('customer.login.verify');
     Route::post('logout', 'LoginController@logout')->name('customer.logout');
     Route::get('customer', 'CustomerController@index')->name('customer');
+
+    # </editor-fold>
+
+    #--------------------------------##   <editor-fold desc="Admin Authenticate Routes">   ##--------------------------------------------#
+
+//    Route::post('admin-login', 'AdminLoginController@login')->name('admin.login');
+//    Route::post('admin-logout', 'AdminLoginController@logout')->name('admin.logout');
+//    Route::get('admin', 'AdminController@index')->name('admin');
+
+    # </editor-fold>
 
 });
