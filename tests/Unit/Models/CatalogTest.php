@@ -81,13 +81,13 @@ class CatalogTest extends TestCase {
     }
 
     /** @test */
-    public function it_not_update_slug_after_update_title()
+    public function it_update_slug_after_update_title()
     {
         $this->catalog->update([
             'label' => $label = $this->faker->sentence
         ]);
 
-        $this->assertNotEquals($this->catalog->slug, Str::slug($label));
+        $this->assertEquals($this->catalog->slug, Str::slug($label));
     }
 
     # </editor-fold>
