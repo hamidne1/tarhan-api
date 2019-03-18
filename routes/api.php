@@ -38,3 +38,4 @@ Route::group(['namespace' => 'Authenticate'], function () {
 
 
 Route::apiResource('catalogs', 'CatalogsController')->except('show');
+Route::apiResource('categories', 'CategoriesController')->except('show');
