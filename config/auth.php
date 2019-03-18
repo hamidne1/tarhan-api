@@ -39,8 +39,15 @@ return [
             'driver' => 'access_token',
             'provider' => 'users',
         ],
+        'admin' => [
+            'driver' => 'jwt',
+            'provider' => 'admins'
+        ]
     ],
 
+    'tokens' => [
+        'expire' => 120 // day
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -64,6 +71,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
     ]
 
 ];

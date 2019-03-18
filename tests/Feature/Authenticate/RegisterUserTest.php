@@ -15,7 +15,7 @@ class RegisterUserTest extends TestCase {
     /**
      * @var $data
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * set data property
@@ -40,6 +40,21 @@ class RegisterUserTest extends TestCase {
         return $this->postJson(
             route('customer.register'), $this->data
         );
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="Security">   ##----------------------------------------------------#
+
+    /** @test */
+    public function an_authenticated_customer_can_not_register_again()
+    {
+        $this->customerLogin()
+            ->register()
+            ->assertStatus(200)
+            ->assertExactJson([
+                'message' => 'already authorized ..!'
+            ]);
     }
 
     # </editor-fold>

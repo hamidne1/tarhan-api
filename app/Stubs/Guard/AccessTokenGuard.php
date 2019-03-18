@@ -144,7 +144,7 @@ class AccessTokenGuard implements Guard {
         if ($user && $user->verify_code == $credentials['verify_code']) {
             $tokenObject = $user->tokens()->create([
                 $this->storageKey => str_random(60),
-                'expire_at' => Carbon::now()->addMinutes(
+                'expire_at' => Carbon::now()->addDays(
                     config('auth.tokens.expire')
                 )
             ]);

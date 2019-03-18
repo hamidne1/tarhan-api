@@ -7,6 +7,13 @@ use Tests\TestCase;
 
 class GetUserTest extends TestCase {
 
+    /** @test */
+    public function a_guest_can_not_see_own_information()
+    {
+        $this->getJson(
+            route('customer')
+        )->assertStatus(401);
+    }
 
     /** @test */
     public function an_authenticated_user_can_see_own_information()
