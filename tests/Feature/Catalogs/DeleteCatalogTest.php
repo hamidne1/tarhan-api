@@ -3,6 +3,7 @@
 namespace Tests\Feature\Catalogs;
 
 use App\Models\Catalog;
+use App\Models\Category;
 use Tests\TestCase;
 
 class DeleteCatalogTest extends TestCase {
@@ -44,7 +45,7 @@ class DeleteCatalogTest extends TestCase {
 
 
     /** @test */
-    public function it_can_delete_a_catalog()
+    public function an_authenticated_admin_can_delete_a_catalog()
     {
         $catalog = create(Catalog::class);
 
@@ -54,4 +55,17 @@ class DeleteCatalogTest extends TestCase {
         $this->assertDatabaseMissing('catalogs', $catalog->toArray());
     }
 
+    /** @test */
+    public function an_authenticated_admin_can_not_delete_catalog_that_has_some_category()
+    {
+        $catalog = create(Catalog::class);
+
+        $catalog->addCategory(raw(Category::class));
+
+        $this->adminLogin()->destroy($catalog->id)
+            ->assertStatus(500)
+            ->assertJsonStructure(['message']);
+
+        $this->assertDatabaseHas('catalogs', $catalog->toArray());
+    }
 }

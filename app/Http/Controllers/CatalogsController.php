@@ -96,8 +96,10 @@ class CatalogsController extends Controller {
      */
     public function destroy($id)
     {
-        Catalog::findOrFail($id)->delete();
+        $catalog = Catalog::findOrFail($id);
 
-        return $this->respondDeleted();
+        return $catalog->hasCategory()
+            ? $this->respondInternalError('به دلیل وجود چندین گروه در این کاتالوگ امکان حذف وجود ندارد')
+            : $this->respondDeleted();
     }
 }
