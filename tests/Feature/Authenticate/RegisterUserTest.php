@@ -3,12 +3,9 @@
 namespace Tests\Feature\Authenticate;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RegisterUserTest extends TestCase {
-
-    use RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 

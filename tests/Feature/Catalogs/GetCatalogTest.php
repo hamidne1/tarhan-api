@@ -3,12 +3,9 @@
 namespace Tests\Feature\Catalogs;
 
 use App\Models\Catalog;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GetCatalogTest extends TestCase {
-    use RefreshDatabase;
-
     /** @test */
     public function it_see_catalog_in_route_catalogs_index()
     {
@@ -28,7 +25,7 @@ class GetCatalogTest extends TestCase {
                 [
                     'data' => [
                         [
-                            'id', 'title', 'label', 'slug', 'level', 'parent_id', 'description'
+                            'id', 'title', 'label', 'slug'
                         ]
                     ]
                 ]

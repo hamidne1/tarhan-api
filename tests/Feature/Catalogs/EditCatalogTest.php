@@ -3,12 +3,9 @@
 namespace Tests\Feature\Catalogs;
 
 use App\Models\Catalog;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class EditCatalogTest extends TestCase {
-
-    use RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
@@ -40,7 +37,7 @@ class EditCatalogTest extends TestCase {
     {
         $catalogId = $catalogId ?: create(Catalog::class)->id;
 
-        return $this->putJson(
+        return $this->adminLogin()->putJson(
             route('catalogs.update', $catalogId), $this->data
         );
     }
@@ -53,7 +50,7 @@ class EditCatalogTest extends TestCase {
     public function an_guest_can_not_edit_catalog()
     {
         $this->putJson(
-            route('catalog.update', 1), []
+            route('catalogs.update', 1), []
         )->assertStatus(401);
     }
 
@@ -61,7 +58,7 @@ class EditCatalogTest extends TestCase {
     public function an_authenticated_customer_can_not_edit_catalog()
     {
         $this->customerLogin()->putJson(
-            route('catalog.update', 1), []
+            route('catalogs.update', 1), []
         )->assertStatus(401);
     }
 
@@ -83,8 +80,8 @@ class EditCatalogTest extends TestCase {
                 'title' => create(Catalog::class)->title
             ]
         )->update($catalog->id)
-            ->assertStatus(200)
-            ->assertJsonMissingValidationErrors('title');
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('title');
     }
 
     /** @test */
@@ -101,8 +98,8 @@ class EditCatalogTest extends TestCase {
                 'label' => create(Catalog::class)->label
             ]
         )->update($catalog->id)
-            ->assertStatus(200)
-            ->assertJsonMissingValidationErrors('label');
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('label');
     }
 
     # </editor-fold>

@@ -3,11 +3,9 @@
 namespace Tests\Feature\Catalogs;
 
 use App\Models\Catalog;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class DeleteCatalogTest extends TestCase {
-    use RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 

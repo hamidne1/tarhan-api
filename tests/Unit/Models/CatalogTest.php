@@ -4,14 +4,13 @@ namespace Tests\Unit\Models;
 
 use App\Models\Catalog;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CatalogTest extends TestCase {
 
-    use WithFaker, RefreshDatabase;
+    use WithFaker;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
@@ -141,7 +140,7 @@ class CatalogTest extends TestCase {
     public function it_should_create_slug_from_the_label_come_from_front()
     {
         $this->assertEquals(
-            $this->catalog->slug, Str::slug($this->catalog->lable)
+            $this->catalog->slug, Str::slug($this->catalog->label)
         );
     }
 

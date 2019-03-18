@@ -4,12 +4,9 @@ namespace Tests\Unit\Models;
 
 use App\Models\Token;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TokenTest extends TestCase {
-
-    use RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 

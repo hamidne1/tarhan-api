@@ -8,10 +8,14 @@ namespace App\Models;
  * @property string label
  * @property integer level
  * @property string slug
+ *
  * @property \Illuminate\Support\Collection children
  * @property \Illuminate\Support\Collection $attributeGroups
  * @property \Illuminate\Support\Collection $optionGroups
  * @property \Illuminate\Support\Collection products
+ *
+ * @property Catalog catalog
+ *
  * @method static |Category findOrFail($category_id)
  * @method static |Category find($category_id)
  * @method static |Category create($data)

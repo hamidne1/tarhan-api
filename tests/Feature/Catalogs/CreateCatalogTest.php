@@ -3,12 +3,9 @@
 namespace Tests\Feature\Catalogs;
 
 use App\Models\Catalog;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CreateCatalogTest extends TestCase {
-
-    use RefreshDatabase;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
@@ -50,7 +47,7 @@ class CreateCatalogTest extends TestCase {
     public function an_guest_can_not_create_new_catalog()
     {
         $this->postJson(
-            route('catalog.store'), []
+            route('catalogs.store'), []
         )->assertStatus(401);
     }
 
@@ -58,7 +55,7 @@ class CreateCatalogTest extends TestCase {
     public function an_authenticated_customer_can_not_create_new_catalog()
     {
         $this->customerLogin()->postJson(
-            route('catalog.store'), []
+            route('catalogs.store'), []
         )->assertStatus(401);
     }
 
@@ -99,20 +96,6 @@ class CreateCatalogTest extends TestCase {
             ->store()
             ->assertStatus(422)
             ->assertJsonValidationErrors('label');
-    }
-
-    /** @test */
-    public function it_required_the_valid_catalog_id()
-    {
-        $this->setData(['catalog_id' => null])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonMissingValidationErrors('catalog_id');
-
-        $this->setData(['catalog_id' => 999])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('catalog_id');
     }
 
     # </editor-fold>

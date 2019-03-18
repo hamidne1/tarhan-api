@@ -4,14 +4,13 @@ namespace Tests\Unit\Models;
 
 use App\Models\Catalog;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase {
 
-    use WithFaker, RefreshDatabase;
+    use WithFaker;
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
@@ -89,13 +88,13 @@ class CategoryTest extends TestCase {
     }
 
     /** @test */
-    public function it_not_update_slug_after_update_title()
+    public function it_update_slug_after_update_title()
     {
         $this->category->update([
             'label' => $label = $this->faker->sentence
         ]);
 
-        $this->assertNotEquals($this->category->slug, Str::slug($label));
+        $this->assertEquals($this->category->slug, Str::slug($label));
     }
 
     # </editor-fold>
@@ -106,7 +105,7 @@ class CategoryTest extends TestCase {
     public function it_belongs_to_a_catalog()
     {
         $this->assertEquals(
-            $this->category->id, $this->catalog->category->id
+            $this->category->catalog->id, $this->catalog->id
         );
     }
 
@@ -120,7 +119,7 @@ class CategoryTest extends TestCase {
         $category = create('App\Models\Category');
 
         $this->assertEquals(
-            $category->slug, Str::slug($category->lable)
+            $category->slug, Str::slug($category->label)
         );
     }
 

@@ -91,11 +91,13 @@ class CatalogsController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return bool
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function destroy($id)
     {
-        return Catalog::findOrFail($id)->delete();
+        Catalog::findOrFail($id)->delete();
+
+        return $this->respondDeleted();
     }
 }
