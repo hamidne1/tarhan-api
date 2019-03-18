@@ -48,7 +48,7 @@ class EditCategoryTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
 
     /** @test */
-    public function an_guest_can_not_edit_catalog()
+    public function an_guest_can_not_edit_category()
     {
         $this->putJson(
             route('categories.update', 1), []
@@ -56,7 +56,7 @@ class EditCategoryTest extends TestCase {
     }
 
     /** @test */
-    public function an_authenticated_customer_can_not_edit_catalog()
+    public function an_authenticated_customer_can_not_edit_category()
     {
         $this->customerLogin()->putJson(
             route('categories.update', 1), []
