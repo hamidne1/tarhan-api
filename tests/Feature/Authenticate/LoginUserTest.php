@@ -57,6 +57,21 @@ class LoginUserTest extends TestCase {
 
     # </editor-fold>
 
+    #-------------------------------------##   <editor-fold desc="Security">   ##----------------------------------------------------#
+
+    /** @test */
+    public function an_authenticated_customer_can_not_logged_in_again()
+    {
+        $this->customerLogin()
+            ->login()
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message' => 'already authorized ..!'
+            ]);
+    }
+
+    # </editor-fold>
+
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
     /** @test */
