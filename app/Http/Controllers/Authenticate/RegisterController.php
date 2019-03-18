@@ -16,6 +16,15 @@ use Illuminate\Support\Facades\Log;
  */
 class RegisterController extends Controller {
 
+    /**
+     * the register user construct
+     *
+     */
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+
 
     /**
      * Register
