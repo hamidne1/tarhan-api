@@ -54,22 +54,6 @@ class Category extends Model {
 
     # </editor-fold>
 
-    #-------------------------------------##   <editor-fold desc="The Scoping">   ##----------------------------------------------------#
-
-    /**
-     * send builder to filter object and apply that
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \App\Filters\CategoryFilter $filters
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeFilter($query, \App\Filters\CategoryFilter $filters)
-    {
-        return $filters->apply($query);
-    }
-
-    # </editor-fold>
-
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
     /**
