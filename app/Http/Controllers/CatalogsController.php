@@ -98,8 +98,12 @@ class CatalogsController extends Controller {
     {
         $catalog = Catalog::findOrFail($id);
 
-        return $catalog->hasCategory()
-            ? $this->respondInternalError('به دلیل وجود چندین گروه در این کاتالوگ امکان حذف وجود ندارد')
-            : $this->respondDeleted();
+        if ($catalog->hasCategory()) {
+            return $this->respondInternalError('به دلیل وجود چندین گروه در این کاتالوگ امکان حذف وجود ندارد');
+        }
+
+        $catalog->delete();
+
+        return $this->respondDeleted();
     }
 }
