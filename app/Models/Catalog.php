@@ -2,9 +2,78 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Catalog extends Model
 {
-    //
+    /**
+     * {@inheritDoc}
+     */
+    public $timestamps = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $guarded = [
+        'id', 'slug', 'catalog_id'
+    ];
+
+    #-------------------------------------##   <editor-fold desc="Booting">   ##----------------------------------------------------#
+
+    /**
+     * {@inheritDoc}
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($category) {
+            $category->slug = $category->label;
+        });
+        static::updating(function ($category) {
+            $category->slug = $category->label;
+        });
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Scoping">   ##----------------------------------------------------#
+
+    /**
+     * send builder to filter object and apply that
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Filters\CategoryFilter $filters
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFilter($query, \App\Filters\CategoryFilter $filters)
+    {
+        return $filters->apply($query);
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
+
+    /**
+     * category catalog
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function catalog()
+    {
+        return $this->belongsTo(Catalog::class);
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
+
+    /**
+     * create slug from the label of category
+     */
+    public function setSlugAttribute()
+    {
+        $this->attributes['slug'] = \Illuminate\Support\Str::slug($this->label);
+    }
+
+    # </editor-fold>
 }
