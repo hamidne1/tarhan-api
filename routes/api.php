@@ -35,3 +35,6 @@ Route::group(['namespace' => 'Authenticate'], function () {
     # </editor-fold>
 
 });
+
+
+Route::apiResource('catalogs', 'CatalogsController')->except('show');
