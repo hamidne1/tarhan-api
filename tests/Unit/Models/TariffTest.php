@@ -32,7 +32,7 @@ class TariffTest extends TestCase {
     {
         parent::setUp();
         $this->category = create(Category::class);
-        $this->tariff = create(Category::class, [
+        $this->tariff = create(Tariff::class, [
             'category_id' => $this->category->id
         ]);
     }
@@ -59,9 +59,9 @@ class TariffTest extends TestCase {
     protected function assertGuard(array $guardData)
     {
         $this->tariff->update(
-            raw(Category::class, $guardData)
+            raw(Tariff::class, $guardData)
         );
-        $this->assertDatabaseMissing('categories', $guardData);
+        $this->assertDatabaseMissing('tariffs', $guardData);
     }
 
     /** @test */

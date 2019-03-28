@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateTariffsTable extends Migration
-{
+class CreateTariffsTable extends Migration {
     /**
      * Run the migrations.
      *
@@ -15,7 +14,13 @@ class CreateTariffsTable extends Migration
     {
         Schema::create('tariffs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
+            $table->unsignedInteger('category_id');
+
+            $table->string('title');
+            $table->string('sub_title');
+            $table->string('icon')->nullable();
+            $table->integer('price');
+            $table->integer('discount')->default(0);
         });
     }
 
