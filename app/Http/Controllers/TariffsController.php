@@ -32,7 +32,7 @@ class TariffsController extends Controller {
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
@@ -47,6 +47,10 @@ class TariffsController extends Controller {
         ]);
 
         $tariff = Tariff::create($validated);
+
+        return $this->respondCreated(
+            'یک تعرفه جدید ایجاد شد', $tariff
+        );
     }
 
     /**
@@ -54,11 +58,25 @@ class TariffsController extends Controller {
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $this->validate($request, [
+            'title' => 'required',
+            'sub_title' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required',
+            'discount' => 'nullable|numeric',
+            'icon' => 'nullable'
+        ]);
+
+        Tariff::findOrFail($id)->update($validated);
+
+        return $this->respond(
+            'بروزرسانی انجام شد'
+        );
     }
 
     /**

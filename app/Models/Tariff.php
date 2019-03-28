@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Category category
  *
  * @method static|Tariff create(array $data)
+ * @method static|Tariff findOrFail(int $id)
  */
 class Tariff extends Model {
 
