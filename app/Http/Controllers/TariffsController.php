@@ -83,10 +83,13 @@ class TariffsController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        //
+        Tariff::findOrFail($id)->delete();
+
+        return $this->respondDeleted();
     }
 }

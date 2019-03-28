@@ -1,26 +1,25 @@
 <?php
 
-namespace Tests\Feature\Categories;
+namespace Tests\Feature\Tariffs;
 
-use App\Models\Category;
+use App\Models\Tariff;
 use Tests\TestCase;
 
-class DeleteCategoryTest extends TestCase {
-
+class DeleteTariffTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
     /**
-     * send the request to destroy the category
+     * send the request to destroy the tariff
      *
-     * @param null $categoryId
+     * @param null $tariffId
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    protected function destroy($categoryId = null)
+    protected function destroy($tariffId = null)
     {
-        $categoryId = $categoryId ?: create(Category::class)->id;
+        $tariffId = $tariffId ?: create(Tariff::class)->id;
 
         return $this->deleteJson(
-            route('categories.destroy', $categoryId)
+            route('tariffs.destroy', $tariffId)
         );
     }
 
@@ -29,13 +28,13 @@ class DeleteCategoryTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
 
     /** @test */
-    public function guest_can_not_delete_a_category()
+    public function guest_can_not_delete_a_tariff()
     {
         $this->destroy()->assertStatus(401);
     }
 
     /** @test */
-    public function an_authenticated_customer_can_not_delete_a_category()
+    public function an_authenticated_customer_can_not_delete_a_tariff()
     {
         $this->customerLogin()->destroy()->assertStatus(401);
     }
@@ -43,15 +42,14 @@ class DeleteCategoryTest extends TestCase {
     # </editor-fold>
 
     /** @test */
-    public function an_authenticated_admin_can_delete_a_category()
+    public function an_authenticated_admin_can_delete_a_tariff()
     {
-        $category = create(Category::class);
+        $tariff = create(Tariff::class);
 
         $this->adminLogin()
-            ->destroy($category->id)
+            ->destroy($tariff->id)
             ->assertStatus(204);
 
-        $this->assertDatabaseMissing('categories', $category->toArray());
+        $this->assertDatabaseMissing('tariffs', $tariff->toArray());
     }
-
 }
