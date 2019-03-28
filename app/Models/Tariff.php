@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Category category
  *
+ * @method static|Tariff create(array $data)
  */
 class Tariff extends Model {
 
@@ -22,7 +23,7 @@ class Tariff extends Model {
      * {@inheritDoc}
      */
     protected $guarded = [
-        'id', 'category_id'
+        'id'
     ];
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#

@@ -37,10 +37,16 @@ class TariffsController extends Controller {
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validated = $this->validate($request, [
             'title' => 'required',
-            'sub_title' => 'required'
+            'sub_title' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required',
+            'discount' => 'nullable|numeric',
+            'icon' => 'nullable'
         ]);
+
+        $tariff = Tariff::create($validated);
     }
 
     /**

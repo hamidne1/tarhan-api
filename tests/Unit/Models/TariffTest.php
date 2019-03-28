@@ -70,12 +70,6 @@ class TariffTest extends TestCase {
         $this->assertGuard(['id' => 14048343]);
     }
 
-    /** @test */
-    public function it_should_guarded_the_category_id_field()
-    {
-        $this->assertGuard(['category_id' => 999]);
-    }
-
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
