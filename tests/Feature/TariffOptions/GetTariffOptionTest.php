@@ -2,21 +2,42 @@
 
 namespace Tests\Feature\TariffOptions;
 
+use App\Models\Tariff;
+use App\Models\TariffOption;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class GetTariffOptionTest extends TestCase
-{
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testExample()
+class GetTariffOptionTest extends TestCase {
+    /** @test */
+    public function it_see_tariff_option_in_route_tariff_option_index()
     {
-        $response = $this->get('/');
+        $tariff = create(Tariff::class);
+        $option = create(TariffOption::class, [
+            'tariff_id' => $tariff->id
+        ]);
+        $anotherOption = create(TariffOption::class);
 
-        $response->assertStatus(200);
+        $this->getJson(route('tariff.options.index', $tariff->id))
+            ->assertStatus(200)
+            ->assertSee($option->title)
+            ->assertDontSee($anotherOption->title);
+    }
+
+    /** @test */
+    public function it_see_tariff_option_in_route_tariff_option_index_in_this_format()
+    {
+        $tariff = create(Tariff::class);
+        create(TariffOption::class, [
+            'tariff_id' => $tariff->id
+        ]);
+        $this->getJson(route('tariff.options.index', $tariff->id))
+            ->assertJsonStructure(
+                [
+                    'data' => [
+                        [
+                            'id', 'title', 'tariff_id', 'icon', 'type'
+                        ]
+                    ]
+                ]
+            );
     }
 }

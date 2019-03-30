@@ -21,6 +21,7 @@ class TariffOptionsController extends Controller {
      */
     public function index(Tariff $tariff)
     {
+
         return TariffOptionResource::collection(
             $tariff->options
         );
