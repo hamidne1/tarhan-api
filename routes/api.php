@@ -40,3 +40,4 @@ Route::group(['namespace' => 'Authenticate'], function () {
 Route::apiResource('catalogs', 'CatalogsController')->except('show');
 Route::apiResource('categories', 'CategoriesController')->except('show');
 Route::apiResource('tariffs', 'TariffsController')->except('show');
+Route::apiResource('tariff.options', 'TariffOptionsController')->except('show');
