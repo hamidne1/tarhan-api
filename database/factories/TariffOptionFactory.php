@@ -10,7 +10,7 @@ $factory->define(App\Models\TariffOption::class, function (Faker $faker) {
             \App\Enums\OptionTypeEnum::values()
         ),
         'tariff_id' => function () {
-            return factory(\App\Models\TariffOption::class)->create()->id;
+            return factory(\App\Models\Tariff::class)->create()->id;
         }
     ];
 });
