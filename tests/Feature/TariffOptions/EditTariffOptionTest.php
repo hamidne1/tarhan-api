@@ -4,6 +4,7 @@ namespace Tests\Feature\TariffOptions;
 
 use App\Models\Tariff;
 use App\Models\TariffOption;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class EditTariffOptionTest extends TestCase {
@@ -37,7 +38,9 @@ class EditTariffOptionTest extends TestCase {
     protected function update($tariffId = null, $tariffOptionId = null)
     {
         $tariffId = $tariffId ?: create(Tariff::class)->id;
-        $tariffOptionId = $tariffOptionId ?: create(TariffOption::class)->id;
+        $tariffOptionId = $tariffOptionId ?: create(TariffOption::class, [
+            'tariff_id' => $tariffId
+        ])->id;
 
         return $this->adminLogin()->putJson(
             route('tariff.options.update', [$tariffId, $tariffOptionId]), $this->data
@@ -102,15 +105,17 @@ class EditTariffOptionTest extends TestCase {
     # </editor-fold>
 
     /** @test */
-    public function it_store_tariff_in_database()
+    public function it_update_tariff_has_been_created()
     {
         $this->setData()
-            ->update($this->data['tariff_id'])
+            ->update()
             ->assertStatus(200)
             ->assertJsonStructure([
                 'message'
             ]);
 
-        $this->assertDatabaseHas('tariff_options', $this->data);
+        $this->assertDatabaseHas('tariff_options', Arr::except(
+            $this->data, 'tariff_id'
+        ));
     }
 }
