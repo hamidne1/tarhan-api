@@ -1,12 +1,11 @@
 <?php
 
-namespace Tests\Feature\Categories;
+namespace Tests\Feature\Tariffs;
 
-use App\Models\Category;
-use Illuminate\Support\Arr;
+use App\Models\Tariff;
 use Tests\TestCase;
 
-class EditCategoryTest extends TestCase {
+class EditTariffTest extends TestCase {
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
@@ -19,27 +18,27 @@ class EditCategoryTest extends TestCase {
      * set data property
      *
      * @param array $override
-     * @return EditCategoryTest
+     * @return EditTariffTest
      */
     protected function setData($override = [])
     {
-        $this->data = raw(Category::class, $override);
+        $this->data = raw(Tariff::class, $override);
 
         return $this;
     }
 
     /**
-     * send the request to store the category
+     * send the request to store the tariff
      *
-     * @param null $categoryId
+     * @param null $tariffId
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    protected function update($categoryId = null)
+    protected function update($tariffId = null)
     {
-        $categoryId = $categoryId ?: create(Category::class);
+        $tariffId = $tariffId ?: create(Tariff::class);
 
         return $this->adminLogin()->putJson(
-            route('categories.update', $categoryId), $this->data
+            route('tariffs.update', $tariffId), $this->data
         );
     }
 
@@ -51,7 +50,7 @@ class EditCategoryTest extends TestCase {
     public function an_guest_can_not_edit_category()
     {
         $this->putJson(
-            route('categories.update', 1), []
+            route('tariffs.update', 1), []
         )->assertStatus(401);
     }
 
@@ -59,7 +58,7 @@ class EditCategoryTest extends TestCase {
     public function an_authenticated_customer_can_not_edit_category()
     {
         $this->customerLogin()->putJson(
-            route('categories.update', 1), []
+            route('tariffs.update', 1), []
         )->assertStatus(401);
     }
 
@@ -68,56 +67,69 @@ class EditCategoryTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
     /** @test */
-    public function it_required_the_valid_title_for_category()
+    public function it_required_the_valid_title_for_tariff()
     {
         $this->setData(['title' => null])
             ->update()
             ->assertStatus(422)
             ->assertJsonValidationErrors('title');
-
-        $this->setData(['title' => create(Category::class)->title])
-            ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('title');
     }
 
     /** @test */
-    public function it_not_validation_error_if_same_title_send_to_update_method()
+    public function it_required_the_valid_sub_title_for_tariff()
     {
-        $category = create(Category::class);
-        $this->setData(['title' => $category->title])
-            ->update($category->id)
-            ->assertStatus(200);
+        $this->setData(['sub_title' => null])
+            ->update()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('sub_title');
     }
 
     /** @test */
-    public function it_required_the_valid_label_for_category()
+    public function it_nullable_valid_category_id()
     {
-        $this->setData(['label' => null])
+        $this->setData(['category_id' => null])
             ->update()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('label');
+            ->assertJsonValidationErrors('category_id');
 
-        $this->setData(['label' => create(Category::class)->label])
+        $this->setData(['category_id' => 999])
             ->update()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('label');
+            ->assertJsonValidationErrors('category_id');
+    }
+
+    /** @test */
+    public function it_required_the_valid_price_for_tariff()
+    {
+        $this->setData(['price' => null])
+            ->update()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('price');
+    }
+
+    /** @test */
+    public function it_can_take_valid_discount_for_tariff()
+    {
+        $this->setData(['discount' => 'string'])
+            ->update()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('discount');
 
     }
 
     /** @test */
-    public function it_not_validation_error_if_same_label_send_to_update_method()
+    public function it_can_take_the_valid_icon_for_tariff()
     {
-        $category = create(Category::class);
-        $this->setData(['label' => $category->label])
-            ->update($category->id)
-            ->assertStatus(200);
+        $this->setData(['icon' => null])
+            ->update()
+            ->assertJsonMissingValidationErrors('icon');
     }
+
 
     # </editor-fold>
 
     /** @test */
-    public function it_store_category_in_database()
+    public function it_update_tariff_in_database()
     {
         $this->setData()
             ->update()
@@ -126,7 +138,6 @@ class EditCategoryTest extends TestCase {
                 'message'
             ]);
 
-        $this->assertDatabaseHas('categories', Arr::except($this->data, 'catalog_id'));
+        $this->assertDatabaseHas('tariffs', $this->data);
     }
-
 }

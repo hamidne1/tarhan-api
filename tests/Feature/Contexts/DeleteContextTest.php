@@ -1,26 +1,26 @@
 <?php
 
-namespace Tests\Feature\Categories;
+namespace Tests\Feature\Widgets;
 
-use App\Models\Category;
+use App\Models\Context;
 use Tests\TestCase;
 
-class DeleteCategoryTest extends TestCase {
+class DeleteContextTest extends TestCase {
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
     /**
-     * send the request to destroy the category
+     * send the request to destroy the context
      *
-     * @param null $categoryId
+     * @param null $contextId
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    protected function destroy($categoryId = null)
+    protected function destroy($contextId = null)
     {
-        $categoryId = $categoryId ?: create(Category::class)->id;
+        $contextId = $contextId ?: create(Context::class);
 
         return $this->deleteJson(
-            route('categories.destroy', $categoryId)
+            route('contexts.destroy', $contextId)
         );
     }
 
@@ -29,13 +29,13 @@ class DeleteCategoryTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
 
     /** @test */
-    public function guest_can_not_delete_a_category()
+    public function guest_can_not_delete_a_context()
     {
         $this->destroy()->assertStatus(401);
     }
 
     /** @test */
-    public function an_authenticated_customer_can_not_delete_a_category()
+    public function an_authenticated_customer_can_not_delete_a_context()
     {
         $this->customerLogin()->destroy()->assertStatus(401);
     }
@@ -43,15 +43,14 @@ class DeleteCategoryTest extends TestCase {
     # </editor-fold>
 
     /** @test */
-    public function an_authenticated_admin_can_delete_a_category()
+    public function an_authenticated_admin_can_delete_a_context()
     {
-        $category = create(Category::class);
+        $context = create(Context::class);
 
         $this->adminLogin()
-            ->destroy($category->id)
+            ->destroy($context->id)
             ->assertStatus(204);
 
-        $this->assertDatabaseMissing('categories', $category->toArray());
+        $this->assertDatabaseMissing('contexts', $context->toArray());
     }
-
 }

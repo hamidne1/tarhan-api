@@ -15,6 +15,7 @@ namespace App\Models;
  * @property \Illuminate\Support\Collection products
  *
  * @property Catalog catalog
+ * @property \Illuminate\Support\Collection tariffs
  *
  * @method static |Category findOrFail($category_id)
  * @method static |Category find($category_id)
@@ -54,22 +55,6 @@ class Category extends Model {
 
     # </editor-fold>
 
-    #-------------------------------------##   <editor-fold desc="The Scoping">   ##----------------------------------------------------#
-
-    /**
-     * send builder to filter object and apply that
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \App\Filters\CategoryFilter $filters
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeFilter($query, \App\Filters\CategoryFilter $filters)
-    {
-        return $filters->apply($query);
-    }
-
-    # </editor-fold>
-
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
     /**
@@ -80,6 +65,32 @@ class Category extends Model {
     public function catalog()
     {
         return $this->belongsTo(Catalog::class);
+    }
+
+    /**
+     * category tariffs
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tariffs()
+    {
+        return $this->hasMany(Tariff::class);
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Methods">   ##----------------------------------------------------#
+
+    /**
+     * category add new tariff
+     *
+     * @param array $data
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function addTariff(array $data)
+    {
+        return $this->tariffs()
+            ->create($data);
     }
 
     # </editor-fold>

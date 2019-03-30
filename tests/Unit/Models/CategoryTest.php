@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Catalog;
 use App\Models\Category;
+use App\Models\Tariff;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -107,6 +108,34 @@ class CategoryTest extends TestCase {
         $this->assertEquals(
             $this->category->catalog->id, $this->catalog->id
         );
+    }
+
+    /** @test */
+    public function it_has_many_tariffs()
+    {
+        $tariffs = create(Tariff::class, [
+            'category_id' => $this->category->id
+        ], 2);
+
+        $tariffs->each(function ($tariff) {
+            $this->assertTrue(
+                $this->category->tariffs->contains($tariff)
+            );
+        });
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
+
+    /** @test */
+    public function it_can_add_new_tariff()
+    {
+        $this->category->addTariff(
+            raw(Tariff::class)
+        );
+
+        $this->assertCount(1, $this->category->tariffs);
     }
 
     # </editor-fold>

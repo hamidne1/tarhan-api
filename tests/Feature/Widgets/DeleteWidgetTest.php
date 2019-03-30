@@ -1,26 +1,26 @@
 <?php
 
-namespace Tests\Feature\Categories;
+namespace Tests\Feature\Widgets;
 
-use App\Models\Category;
+use App\Models\Widget;
 use Tests\TestCase;
 
-class DeleteCategoryTest extends TestCase {
+class DeleteWidgetTest extends TestCase {
 
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
     /**
-     * send the request to destroy the category
+     * send the request to destroy the widget
      *
-     * @param null $categoryId
+     * @param null $widgetId
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    protected function destroy($categoryId = null)
+    protected function destroy($widgetId = null)
     {
-        $categoryId = $categoryId ?: create(Category::class)->id;
+        $widgetId = $widgetId ?: create(Widget::class);
 
         return $this->deleteJson(
-            route('categories.destroy', $categoryId)
+            route('widgets.destroy', $widgetId)
         );
     }
 
@@ -29,13 +29,13 @@ class DeleteCategoryTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
 
     /** @test */
-    public function guest_can_not_delete_a_category()
+    public function guest_can_not_delete_a_widget()
     {
         $this->destroy()->assertStatus(401);
     }
 
     /** @test */
-    public function an_authenticated_customer_can_not_delete_a_category()
+    public function an_authenticated_customer_can_not_delete_a_widget()
     {
         $this->customerLogin()->destroy()->assertStatus(401);
     }
@@ -43,15 +43,14 @@ class DeleteCategoryTest extends TestCase {
     # </editor-fold>
 
     /** @test */
-    public function an_authenticated_admin_can_delete_a_category()
+    public function an_authenticated_admin_can_delete_a_widget()
     {
-        $category = create(Category::class);
+        $widget = create(Widget::class);
 
         $this->adminLogin()
-            ->destroy($category->id)
+            ->destroy($widget->id)
             ->assertStatus(204);
 
-        $this->assertDatabaseMissing('categories', $category->toArray());
+        $this->assertDatabaseMissing('widgets', $widget->toArray());
     }
-
 }
