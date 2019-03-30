@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Tariffs;
+namespace Tests\Feature\TariffOptions;
 
 use App\Models\Tariff;
+use App\Models\TariffOption;
 use Tests\TestCase;
 
-class CreateTariffTest extends TestCase {
-
+class CreateTariffOptionTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
     /**
@@ -18,11 +18,11 @@ class CreateTariffTest extends TestCase {
      * set data property
      *
      * @param array $override
-     * @return CreateTariffTest
+     * @return CreateTariffOptionTest
      */
     protected function setData($override = [])
     {
-        $this->data = raw(Tariff::class, $override);
+        $this->data = raw(TariffOption::class, $override);
 
         return $this;
     }
@@ -30,12 +30,15 @@ class CreateTariffTest extends TestCase {
     /**
      * send the request to store the tariff
      *
+     * @param null $tariffId
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    protected function store()
+    protected function store($tariffId = null)
     {
+        $tariffId = $tariffId ?: create(Tariff::class)->id;
+
         return $this->adminLogin()->postJson(
-            route('tariffs.store'), $this->data
+            route('tariff.options.store', $tariffId), $this->data
         );
     }
 
@@ -44,10 +47,10 @@ class CreateTariffTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
 
     /** @test */
-    public function an_guest_can_not_create_new_tariff()
+    public function an_guest_can_not_create_new_tariff_option()
     {
         $this->postJson(
-            route('tariffs.store'), []
+            route('tariff.options.store', 1), []
         )->assertStatus(401);
     }
 
@@ -55,7 +58,7 @@ class CreateTariffTest extends TestCase {
     public function an_authenticated_customer_can_not_create_new_tariff()
     {
         $this->customerLogin()->postJson(
-            route('tariffs.store'), []
+            route('tariff.options.store', 1), []
         )->assertStatus(401);
     }
 
@@ -64,7 +67,7 @@ class CreateTariffTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
     /** @test */
-    public function it_required_the_valid_title_for_tariff()
+    public function it_required_the_valid_title_for_tariff_options()
     {
         $this->setData(['title' => null])
             ->store()
@@ -73,45 +76,31 @@ class CreateTariffTest extends TestCase {
     }
 
     /** @test */
-    public function it_required_the_valid_sub_title_for_tariff()
+    public function it_required_valid_tariff_id()
     {
-        $this->setData(['sub_title' => null])
+        $this->setData(['tariff_id' => null])
             ->store()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('sub_title');
+            ->assertJsonValidationErrors('tariff_id');
+
+        $this->setData(['tariff_id' => 999])
+            ->store()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('tariff_id');
     }
 
     /** @test */
-    public function it_required_valid_category_id()
+    public function it_required_valid_type()
     {
-        $this->setData(['category_id' => null])
+        $this->setData(['type' => null])
             ->store()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('category_id');
+            ->assertJsonValidationErrors('type');
 
-        $this->setData(['category_id' => 999])
+        $this->setData(['type' => 'non of other enums'])
             ->store()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('category_id');
-    }
-
-    /** @test */
-    public function it_required_the_valid_price_for_tariff()
-    {
-        $this->setData(['price' => null])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('price');
-    }
-
-    /** @test */
-    public function it_can_take_valid_discount_for_tariff()
-    {
-        $this->setData(['discount' => 'string'])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('discount');
-
+            ->assertJsonValidationErrors('type');
     }
 
     /** @test */
@@ -134,8 +123,6 @@ class CreateTariffTest extends TestCase {
                 'data', 'message'
             ]);
 
-        $this->assertDatabaseHas('tariffs', $this->data);
+        $this->assertDatabaseHas('tariff_options', $this->data);
     }
-
-
 }

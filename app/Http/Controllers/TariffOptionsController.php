@@ -24,22 +24,29 @@ class TariffOptionsController extends Controller {
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Tariff $tariff
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request, Tariff $tariff)
     {
-        //
-    }
+        $validated = $this->validate($request, [
+            'title' => 'required',
+            'icon' => 'nullable',
+            'type' => [
+                'required', \Illuminate\Validation\Rule::in(
+                    \App\Enums\OptionTypeEnum::values()
+                )
+            ],
+            'tariff_id' => 'required'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $option = $tariff->options()->create($validated);
+
+        return $this->respondCreated(
+            'یک گزینه ی جدید افزوده شد', new TariffOptionResource($option)
+        );
+
     }
 
     /**
