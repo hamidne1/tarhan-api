@@ -2,21 +2,62 @@
 
 namespace Tests\Feature\TariffOptions;
 
+use App\Models\Tariff;
+use App\Models\TariffOption;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class DeleteTariffOptionTest extends TestCase
-{
+class DeleteTariffOptionTest extends TestCase {
+    #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
+
     /**
-     * A basic feature test example.
+     * send the request to destroy the tariffOption
      *
-     * @return void
+     * @param null $tariffId
+     * @param null $tariffOptionId
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function testExample()
+    protected function destroy($tariffId = null, $tariffOptionId = null)
     {
-        $response = $this->get('/');
+        $tariffId = $tariffId ?: create(Tariff::class)->id;
+        $tariffOptionId = $tariffOptionId ?: create(TariffOption::class, [
+            'tariff_id' => $tariffId
+        ])->id;
 
-        $response->assertStatus(200);
+        return $this->deleteJson(
+            route('tariff.options.destroy', [$tariffId, $tariffOptionId])
+        );
+    }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
+
+    /** @test */
+    public function guest_can_not_delete_a_tariff()
+    {
+        $this->destroy()->assertStatus(401);
+    }
+
+    /** @test */
+    public function an_authenticated_customer_can_not_delete_a_tariff()
+    {
+        $this->customerLogin()->destroy()->assertStatus(401);
+    }
+
+    # </editor-fold>
+
+    /** @test */
+    public function an_authenticated_admin_can_delete_a_tariff()
+    {
+        $tariff = create(Tariff::class);
+        $tariffOption = create(TariffOption::class, [
+            'tariff_id' => $tariff->id
+        ]);
+
+        $this->adminLogin()
+            ->destroy($tariff->id, $tariffOption->id)
+            ->assertStatus(204);
+
+        $this->assertDatabaseMissing('tariff_options', $tariffOption->toArray());
     }
 }

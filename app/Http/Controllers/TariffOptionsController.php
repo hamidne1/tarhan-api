@@ -86,11 +86,15 @@ class TariffOptionsController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Tariff $tariff
+     * @param $tariffOptionId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Tariff $tariff, $tariffOptionId)
     {
-        //
+        $tariff->options()->findOrFail($tariffOptionId)->delete();
+
+        return $this->respondDeleted();
     }
 }
