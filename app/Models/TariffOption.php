@@ -2,17 +2,12 @@
 
 namespace App\Models;
 
-/**
- *
- * @property integer id
- *
- * @property Category category
- *
- * @method static|Tariff create(array $data)
- * @method static|Tariff findOrFail(int $id)
- */
-class Tariff extends Model {
+use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property Tariff tariff
+ */
+class TariffOption extends Model {
     /**
      * {@inheritDoc}
      */
@@ -22,21 +17,20 @@ class Tariff extends Model {
      * {@inheritDoc}
      */
     protected $guarded = [
-        'id'
+        'id', 'tariff_id'
     ];
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
     /**
-     * tariff category
+     * tariffOption tariff
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category()
+    public function tariff()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Tariff::class);
     }
 
     # </editor-fold>
-
 }
