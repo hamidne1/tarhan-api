@@ -13,7 +13,7 @@ class CreateTariffsTable extends Migration {
     public function up()
     {
         Schema::create('tariffs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->unsignedInteger('category_id');
 
             $table->string('title');
