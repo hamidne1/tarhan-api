@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Category;
 use App\Models\Tariff;
+use App\Models\TariffOption;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
@@ -82,6 +83,19 @@ class TariffTest extends TestCase {
         );
     }
 
+    /** @test */
+    public function it_has_many_options()
+    {
+        $options = create(TariffOption::class, [
+            'tariff_id' => $this->tariff->id
+        ], 2);
+
+        $options->each(function ($option) {
+            $this->assertTrue(
+                $this->tariff->options->contains($option)
+            );
+        });
+    }
     # </editor-fold>
 
 

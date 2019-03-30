@@ -21,6 +21,10 @@ class CreateTariffsTable extends Migration {
             $table->string('icon')->nullable();
             $table->integer('price');
             $table->integer('discount')->default(0);
+
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

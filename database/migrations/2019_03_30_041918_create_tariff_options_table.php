@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateTariffOptionsTable extends Migration
-{
+class CreateTariffOptionsTable extends Migration {
     /**
      * Run the migrations.
      *
@@ -14,8 +13,17 @@ class CreateTariffOptionsTable extends Migration
     public function up()
     {
         Schema::create('tariff_options', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->increments('id');
+
+            $table->unsignedInteger('tariff_id');
+
+            $table->string('title');
+            $table->string('icon');
+            $table->enum('type', \App\Enums\OptionTypeEnum::values());
+
+            $table->foreign('tariff_id')
+                ->references('id')->on('tariffs')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
