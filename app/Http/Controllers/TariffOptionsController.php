@@ -7,6 +7,12 @@ use App\Models\Tariff;
 use Illuminate\Http\Request;
 
 class TariffOptionsController extends Controller {
+
+    public function __construct()
+    {
+        $this->middleware('auth:admin')->except('index');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +44,7 @@ class TariffOptionsController extends Controller {
                     \App\Enums\OptionTypeEnum::values()
                 )
             ],
-            'tariff_id' => 'required'
+            'tariff_id' => 'required|exists:tariffs,id'
         ]);
 
         $option = $tariff->options()->create($validated);

@@ -116,8 +116,11 @@ class CreateTariffOptionTest extends TestCase {
     /** @test */
     public function it_store_tariff_in_database()
     {
-        $this->setData()
-            ->store()
+        $tariff = create(Tariff::class);
+
+        $this->setData([
+            'tariff_id' => $tariff->id
+        ])->store($tariff->id)
             ->assertStatus(201)
             ->assertJsonStructure([
                 'data', 'message'
