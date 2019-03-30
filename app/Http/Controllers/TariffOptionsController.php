@@ -59,12 +59,28 @@ class TariffOptionsController extends Controller {
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Tariff $tariff
+     * @param $tariffOptionId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Tariff $tariff, $tariffOptionId)
     {
-        //
+        $validated = $this->validate($request, [
+            'title' => 'required',
+            'icon' => 'nullable',
+            'type' => [
+                'required', \Illuminate\Validation\Rule::in(
+                    \App\Enums\OptionTypeEnum::values()
+                )
+            ],
+        ]);
+
+        $tariff->options()->findOrFail($tariffOptionId)->update($validated);
+
+        return $this->respond(
+            'بروزرسانی با موفقیت انجام شد'
+        );
     }
 
     /**
