@@ -8,6 +8,9 @@ $factory->define(App\Models\Receipt::class, function (Faker $faker) {
         'status' => $faker->randomElement(
             \App\Enums\ReceiptStatusEnum::values()
         ),
-        'image' => null
+        'image' => null,
+        'order_id' => function(){
+            return factory(\App\Models\Order::class)->create()->id;
+        }
     ];
 });
