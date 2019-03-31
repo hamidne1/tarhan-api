@@ -15,6 +15,8 @@ class CreateReceiptsTable extends Migration {
         Schema::create('receipts', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->unsignedInteger('order_id')->nullable();
+
             $table->unsignedBigInteger('price');
 
             $table->enum(
@@ -24,6 +26,10 @@ class CreateReceiptsTable extends Migration {
             $table->string('image')->nullable();
 
             $table->timestamps();
+
+            $table->foreign('order_id')
+                ->references('id')->on('orders')
+                ->onDelete('set null')->onUpdate('cascade');
         });
     }
 

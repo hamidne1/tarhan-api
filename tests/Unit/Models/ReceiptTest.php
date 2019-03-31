@@ -74,7 +74,7 @@ class ReceiptTest extends TestCase {
 
         $receipt = create(Receipt::class, ['order_id' => $order_id]);
 
-        $this->assertEquals($order_id, $receipt->receipt->id);
+        $this->assertEquals($order_id, $receipt->order->id);
     }
 
     /** @test */
