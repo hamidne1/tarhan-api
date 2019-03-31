@@ -21,6 +21,8 @@ class CreateReceiptsTable extends Migration {
                 'status', \App\Enums\ReceiptStatusEnum::values()
             );
 
+            $table->string('image')->nullable();
+
             $table->timestamps();
         });
     }
