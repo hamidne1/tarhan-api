@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FieldResource;
 use App\Models\Category;
+use App\Models\Field;
 use Illuminate\Http\Request;
 
 class FieldController extends Controller
@@ -15,18 +17,13 @@ class FieldController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:admin');
+        //$this->middleware('auth:admin');
     }
 
 
-    /**
-     * Display a listing of the fileds for a category resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Category $category)
+    public function index()
     {
-        return $category->fields;
+
     }
 
     /**
@@ -40,31 +37,50 @@ class FieldController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store
+     * Store a newly created field resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @bodyParam title string required The  title of the field.
+     * @bodyParam label string required The  icon of the field.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        $validated = $this->validate($request, [
+            'title' => 'required',
+            'icon' => 'required'
+        ]);
+
+        $category = Category::findOrFail($id);
+        $field = $category->fields()->save(new Field($validated));
+
+        return $this->respondCreated(
+            'یک فیلد جدید ایجاد شد', new FieldResource($field)
+        );
     }
 
     /**
-     * Display the specified resource.
+     * show
+     * Display a listing of the fields resources.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return FieldResource::collection($category->fields);
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -75,8 +91,8 @@ class FieldController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -87,7 +103,7 @@ class FieldController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

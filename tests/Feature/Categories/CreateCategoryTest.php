@@ -22,6 +22,7 @@ class CreateCategoryTest extends TestCase {
      */
     protected function setData($override = [])
     {
+
         $this->data = raw(Category::class, $override);
 
         return $this;
