@@ -83,83 +83,36 @@ class OrderTest extends TestCase {
     }
 
     /** @test */
-    public function it_has_many_transactions()
+    public function it_has_many_receipts()
     {
-        $transactions = create('App\Models\Transaction', [
+        $receipts = create('App\Models\Receipt', [
             'order_id' => $this->order->id
         ], 2);
 
-        $transactions->each(function ($transaction) {
-            $this->assertTrue($this->order->transactions->contains($transaction));
+        $receipts->each(function ($receipt) {
+            $this->assertTrue($this->order->receipts->contains($receipt));
         });
     }
 
     /** @test */
-    public function it_has_one_shipping()
+    public function it_has_many_transactions()
     {
-        $shipping = create('App\Models\Shipping', [
+        $receipt = create('App\Models\Receipt', [
             'order_id' => $this->order->id
         ]);
 
-        $this->assertEquals($this->order->shipping->id, $shipping->id);
+        $transactions = create('App\Models\Transaction', [
+            'receipt_id' => $receipt->id
+        ], 2);
+
+        $transactions->each(function ($transaction) {
+            $this->assertTrue(
+                $this->order->transactions->contains($transaction)
+            );
+        });
+
     }
 
-    /** @test */
-    public function it_has_many_products()
-    {
-        $product = create('App\Models\Product');
-
-        $this->order->products()->attach([$product->id]);
-
-        $this->assertTrue(
-            $this->order->products->contains($product)
-        );
-    }
-
-    /** @test */
-    public function it_has_many_products_with_the_pivot_data()
-    {
-        $product1 = create('App\Models\Product');
-        $product2 = create('App\Models\Product');
-        $this->order->products()->attach([
-            $data1 = [
-                'product_id' => $product1->id,
-                'order_id' => $this->order->id,
-                'price' => $product1->payment,
-                'options_id' => $options1 = create('App\Models\Option', [], 2)->pluck('id')->toArray()
-            ],
-            $data2 = [
-                'product_id' => $product2->id,
-                'order_id' => $this->order->id,
-                'price' => $product2->payment,
-                'options_id' => $options2 = create('App\Models\Option', [], 2)->pluck('id')->toArray()
-            ]
-        ]);
-
-        $this->assertEquals($data1['price'], $this->order->products->first()->pivot->price);
-        $this->assertEquals($data1['options_id'], $this->order->products->first()->pivot->options_id);
-//
-        $this->assertEquals($data2['price'], $this->order->products->last()->pivot->price);
-        $this->assertEquals($data2['options_id'], $this->order->products->last()->pivot->options_id);
-    }
 
     # </editor-fold>
-
-    #-------------------------------------##   <editor-fold desc="The Accessor">   ##----------------------------------------------------#
-
-    /** @test */
-    public function it_calculate_order_total_price()
-    {
-        create('App\Models\Shipping', [
-            'order_id' => $this->order->id,
-            'price' => $price = 1300
-        ]);
-
-        $this->assertEquals(
-            $this->order->payment + $price, $this->order->total
-        );
-    }
-
-    # </editor-fold>
-
 }

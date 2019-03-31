@@ -7,6 +7,7 @@ namespace App\Models;
  * @property User user
  *
  * @property \Illuminate\Support\Collection receipts
+ * @property \Illuminate\Support\Collection transactions
  */
 class Order extends Model {
 
