@@ -106,4 +106,14 @@ class Category extends Model {
     }
 
     # </editor-fold>
+
+
+
+    /**
+     * The fields that belong to the category.
+     */
+    public function fields()
+    {
+        return $this->belongsToMany('App\Models\Field','category_field');
+    }
 }
