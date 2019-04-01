@@ -17,7 +17,7 @@ class FieldController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth:admin');
+        $this->middleware('auth:admin');
     }
 
 
@@ -44,19 +44,25 @@ class FieldController extends Controller
      * @bodyParam label string required The  icon of the field.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
+
+
         $validated = $this->validate($request, [
             'title' => 'required',
             'icon' => 'required'
         ]);
 
-        $category = Category::findOrFail($id);
-        $field = $category->fields()->save(new Field($validated));
+        $validated_id = $this->validate($request, [
+            'category_id' => 'required|exists:categories,id'
+        ]);
+
+        $category = Category::find((int)$validated_id);
+
+        $field = $category->addFields($validated);
 
         return $this->respondCreated(
             'یک فیلد جدید ایجاد شد', new FieldResource($field)

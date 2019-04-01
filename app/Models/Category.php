@@ -22,7 +22,8 @@ namespace App\Models;
  * @method static |Category create($data)
  * @method static |\Illuminate\Database\Eloquent\Builder filter(\App\Filters\CategoryFilter $categoryFilters)
  */
-class Category extends Model {
+class Category extends Model
+{
 
     /**
      * {@inheritDoc}
@@ -108,12 +109,23 @@ class Category extends Model {
     # </editor-fold>
 
 
-
     /**
      * The fields that belong to the category.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function fields()
     {
-        return $this->belongsToMany('App\Models\Field','category_field');
+        return $this->belongsToMany('App\Models\Field', 'category_field');
+    }
+
+    /**
+     * add a field to category
+     * @param $data
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function addFields($data)
+    {
+        return $this->fields()->create($data);
+
     }
 }
