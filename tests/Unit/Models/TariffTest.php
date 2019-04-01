@@ -99,7 +99,7 @@ class TariffTest extends TestCase {
     }
     # </editor-fold>
 
-    #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
+    #-------------------------------------##   <editor-fold desc="The Accessor">   ##----------------------------------------------------#
 
     /** @test */
     public function it_create_title_for_order()
@@ -114,7 +114,12 @@ class TariffTest extends TestCase {
             'category_id' => $category->id
         ]);
 
-
+        $this->assertEquals(
+            implode('-', [
+                $catalog->title, $category->title, $tariff->title
+            ]),
+            $tariff->full_title
+        );
     }
 
     # </editor-fold>
