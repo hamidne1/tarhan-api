@@ -18,7 +18,7 @@ class Transaction extends Model {
      * {@inheritDoc}
      */
     protected $guarded = [
-        'id', 'receipt_id'
+        'id'
     ];
 
 
