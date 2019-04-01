@@ -4,6 +4,7 @@ namespace App\Models;
 
 /**
  * @property integer id
+ * @property integer price
  *
  * @property \Illuminate\Support\Collection transactions
  */

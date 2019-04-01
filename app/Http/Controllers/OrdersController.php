@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tariff;
-use App\Services\Gateway\Mellat;
+use App\Services\Gateway\MellatException;
+use App\Services\PaymentService;
 use App\Services\ReceiptService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,11 +31,11 @@ class OrdersController extends Controller {
      *
      * @param Request $request
      * @param ReceiptService $receiptService
-     * @param Mellat $mellat
-     * @return void
+     * @param PaymentService $paymentService
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request, ReceiptService $receiptService)
+    public function store(Request $request, ReceiptService $receiptService, PaymentService $paymentService)
     {
         $validated = $this->validate($request, [
             'tariff_id' => 'required|exists:tariffs,id',
@@ -52,42 +53,16 @@ class OrdersController extends Controller {
                 'price' => $tariff->payment
             ]);
 
-        $receipt = $receiptService->store($order);
-
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        try {
+            return $paymentService->requestToPay(
+                $receiptService->store($order)
+            );
+        } catch (MellatException $e) {
+            return $this->respondInternalError($e->getMessage());
+        } catch (\SoapFault $e) {
+            return $this->respondInternalError('در اتصال به بانک مشکلی بوجود آمده است.');
+        } catch (\Exception $e) {
+            return $this->respondInternalError('صورت حسابی یافت نشد');
+        }
     }
 }
