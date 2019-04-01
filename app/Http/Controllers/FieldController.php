@@ -49,8 +49,6 @@ class FieldController extends Controller
      */
     public function store(Request $request)
     {
-
-
         $validated = $this->validate($request, [
             'title' => 'required',
             'icon' => 'required'
@@ -95,15 +93,29 @@ class FieldController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update
+     * Update a exists created field resource
+     *
+     * @bodyParam title string required The  title of the field.
+     * @bodyParam icon string required The  icon of the field.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(\Illuminate\Http\Request $request, $id)
     {
-        //
+
+        $validated = $this->validate($request, [
+            'title' => 'required',
+            'icon' => 'required',
+        ]);
+
+        Field::findOrFail($id)->update($validated);
+
+        return $this->respond('فیلد بروزرسانی شد');
     }
 
     /**
