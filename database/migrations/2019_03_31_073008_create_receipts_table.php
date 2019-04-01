@@ -21,7 +21,7 @@ class CreateReceiptsTable extends Migration {
 
             $table->enum(
                 'status', \App\Enums\ReceiptStatusEnum::values()
-            );
+            )->default(\App\Enums\ReceiptStatusEnum::UnPaid);
 
             $table->string('image')->nullable();
 

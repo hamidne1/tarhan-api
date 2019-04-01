@@ -4,6 +4,8 @@ namespace App\Models;
 
 /**
  * @property integer id
+ * @property integer price
+ *
  * @property User user
  *
  * @property \Illuminate\Support\Collection receipts

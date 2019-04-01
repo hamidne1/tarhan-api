@@ -12,7 +12,8 @@ namespace App\Models;
  * @property integer price
  * @property integer discount
  *
- * @property string full_path
+ * @property string full_title
+ * @property string payment
  *
  * @property Category category
  * @property \Illuminate\Support\Collection options
@@ -70,6 +71,16 @@ class Tariff extends Model {
         return implode('-', [
             $this->category->catalog->title, $this->category->title, $this->title
         ]);
+    }
+
+    /**
+     * get tariff payment
+     *
+     * @return string
+     */
+    public function getPaymentAttribute()
+    {
+        return ($this->price - $this->discount);
     }
 
     # </editor-fold>
