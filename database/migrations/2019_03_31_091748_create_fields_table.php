@@ -18,6 +18,8 @@ class CreateFieldsTable extends Migration
             $table->string('title');
             $table->string('icon');
             $table->timestamps();
+
+
         });
     }
 

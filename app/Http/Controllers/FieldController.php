@@ -21,21 +21,6 @@ class FieldController extends Controller
     }
 
 
-    public function index()
-    {
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store
      * Store a newly created field resource in storage.
@@ -81,16 +66,6 @@ class FieldController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update
@@ -119,13 +94,17 @@ class FieldController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified field from storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        //
+
+        Field::findOrFail($id)->delete();
+
+        return $this->respondDeleted();
     }
 }
