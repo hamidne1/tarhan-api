@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Catalog;
 use App\Models\Category;
 use App\Models\Tariff;
 use App\Models\TariffOption;
@@ -98,5 +99,23 @@ class TariffTest extends TestCase {
     }
     # </editor-fold>
 
+    #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
+    /** @test */
+    public function it_create_title_for_order()
+    {
+        $catalog = create(Catalog::class);
+
+        $category = create(Category::class, [
+            'catalog_id' => $catalog->id
+        ]);
+
+        $tariff = create(Tariff::class, [
+            'category_id' => $category->id
+        ]);
+
+
+    }
+
+    # </editor-fold>
 }
