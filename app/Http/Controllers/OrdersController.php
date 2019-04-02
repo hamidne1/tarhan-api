@@ -55,7 +55,7 @@ class OrdersController extends Controller {
 
         try {
             return $paymentService->requestToPay(
-                $receiptService->store($order)
+                $receiptService->store($order, ceil($order->price * 0.5))
             );
         } catch (MellatException $e) {
             return $this->respondInternalError($e->getMessage());

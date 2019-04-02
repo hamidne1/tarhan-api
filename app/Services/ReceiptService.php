@@ -13,13 +13,14 @@ class ReceiptService {
      * create new receipt
      *
      * @param Order $order
+     * @param $price
      * @return \Illuminate\Database\Eloquent\Model|Receipt
      */
-    public function store(Order $order)
+    public function store(Order $order, $price)
     {
         return $order->receipts()
             ->create([
-                'price' => ceil($order->price * 0.5)
+                'price' => $price
             ]);
     }
 
