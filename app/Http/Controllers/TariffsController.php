@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\TariffResource;
 use App\Models\Tariff;
+use App\Services\TariffService;
 use Illuminate\Http\Request;
 
 class TariffsController extends Controller {
@@ -19,12 +20,13 @@ class TariffsController extends Controller {
     /**
      * Display a listing of the resource.
      *
+     * @param TariffService $service
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(TariffService $service)
     {
         return TariffResource::collection(
-            Tariff::all()
+            $service->get()
         );
     }
 
