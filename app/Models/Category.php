@@ -17,11 +17,11 @@ namespace App\Models;
  *
  * @property Catalog catalog
  * @property \Illuminate\Support\Collection tariffs
+ * @property \Illuminate\Support\Collection fields
  *
  * @method static |Category findOrFail($category_id)
  * @method static |Category find($category_id)
  * @method static |Category create($data)
- * @method static |\Illuminate\Database\Eloquent\Builder filter(\App\Filters\CategoryFilter $categoryFilters)
  */
 class Category extends Model {
 
