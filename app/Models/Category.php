@@ -104,19 +104,6 @@ class Category extends Model {
             ->create($data);
     }
 
-    /**
-     * add a field to this category
-     *
-     * @param $data
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function addFields($data)
-    {
-        return $this->fields()
-            ->create($data);
-
-    }
-
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#

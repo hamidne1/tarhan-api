@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\FieldResource;
-use App\Models\Category;
 use App\Models\Field;
 use Illuminate\Http\Request;
 
@@ -35,11 +34,9 @@ class FieldsController extends Controller {
         $validated = $this->validate($request, [
             'title' => 'required',
             'icon' => 'required',
-            'category_id' => 'required|exists:categories,id'
         ]);
 
-        $field = Category::findOrFail($validated['category_id'])
-            ->addFields($validated);
+        $field = Field::create($validated);
 
         return $this->respondCreated(
             'یک فیلد جدید ایجاد شد', new FieldResource($field)
