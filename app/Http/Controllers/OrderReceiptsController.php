@@ -47,16 +47,6 @@ class OrderReceiptsController extends Controller {
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -80,11 +70,15 @@ class OrderReceiptsController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
+     * @param Order $order
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Order $order, $id)
     {
-        //
+        $order->receipts()->findOrFail($id)->delete();
+
+        return $this->respondDeleted();
     }
 }

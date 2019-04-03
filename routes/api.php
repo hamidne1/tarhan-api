@@ -42,7 +42,7 @@ Route::apiResource('categories', 'CategoriesController')->except('show');
 Route::apiResource('tariffs', 'TariffsController')->except('show');
 Route::apiResource('tariff.options', 'TariffOptionsController')->except('show');
 Route::apiResource('orders', 'OrdersController')->except('show', 'delete', 'update');
-Route::apiResource('order.receipts', 'OrderReceiptsController');
+Route::apiResource('order.receipts', 'OrderReceiptsController')->except('show');
 Route::post('payments/verify', 'VerifyController@verify')->name('payments.verify');
 
 
