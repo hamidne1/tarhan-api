@@ -15,4 +15,5 @@ class Field extends Model
     {
         return $this->belongsToMany('App\Model\Category');
     }
+
 }

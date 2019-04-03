@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFieldsTable extends Migration
+class CreateFieldsValuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateFieldsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fields', function (Blueprint $table) {
+        Schema::create('fields_values', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->string('icon');
+            $table->string('title_value');
+            $table->string('icon_value');
             $table->timestamps();
-
         });
     }
 
@@ -29,6 +28,6 @@ class CreateFieldsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fields');
+        Schema::dropIfExists('fields_values');
     }
 }
