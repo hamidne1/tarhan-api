@@ -62,12 +62,19 @@ class OrderReceiptsController extends Controller {
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Order $order
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order, $id)
     {
-        //
+        $validated = $this->validate($request, [
+            'price' => 'required|numeric'
+        ]);
+
+        $order->receipts()->findOrFail($id)->update($validated);
+
+        return $this->respond('بروزرسانی انجام شد');
     }
 
     /**
