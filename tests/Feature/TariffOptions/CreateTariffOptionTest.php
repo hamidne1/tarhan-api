@@ -38,7 +38,7 @@ class CreateTariffOptionTest extends TestCase {
         $tariffId = $tariffId ?: create(Tariff::class)->id;
 
         return $this->adminLogin()->postJson(
-            route('tariff.options.store', $tariffId), $this->data
+            route('tariffs.options.store', $tariffId), $this->data
         );
     }
 
@@ -50,7 +50,7 @@ class CreateTariffOptionTest extends TestCase {
     public function an_guest_can_not_create_new_tariff_option()
     {
         $this->postJson(
-            route('tariff.options.store', 1), []
+            route('tariffs.options.store', 1), []
         )->assertStatus(401);
     }
 
@@ -58,7 +58,7 @@ class CreateTariffOptionTest extends TestCase {
     public function an_authenticated_customer_can_not_create_new_tariff()
     {
         $this->customerLogin()->postJson(
-            route('tariff.options.store', 1), []
+            route('tariffs.options.store', 1), []
         )->assertStatus(401);
     }
 
@@ -73,20 +73,6 @@ class CreateTariffOptionTest extends TestCase {
             ->store()
             ->assertStatus(422)
             ->assertJsonValidationErrors('title');
-    }
-
-    /** @test */
-    public function it_required_valid_tariff_id()
-    {
-        $this->setData(['tariff_id' => null])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('tariff_id');
-
-        $this->setData(['tariff_id' => 999])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('tariff_id');
     }
 
     /** @test */

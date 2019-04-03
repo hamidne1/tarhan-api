@@ -43,7 +43,7 @@ class EditTariffOptionTest extends TestCase {
         ])->id;
 
         return $this->adminLogin()->putJson(
-            route('tariff.options.update', [$tariffId, $tariffOptionId]), $this->data
+            route('tariffs.options.update', [$tariffId, $tariffOptionId]), $this->data
         );
     }
 
@@ -55,7 +55,7 @@ class EditTariffOptionTest extends TestCase {
     public function an_guest_can_not_update_tariff_option()
     {
         $this->putJson(
-            route('tariff.options.update', [1, 1]), []
+            route('tariffs.options.update', [1, 1]), []
         )->assertStatus(401);
     }
 
@@ -63,7 +63,7 @@ class EditTariffOptionTest extends TestCase {
     public function an_authenticated_customer_can_not_create_new_tariff()
     {
         $this->customerLogin()->putJson(
-            route('tariff.options.update', [1, 1]), []
+            route('tariffs.options.update', [1, 1]), []
         )->assertStatus(401);
     }
 

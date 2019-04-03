@@ -24,7 +24,7 @@ class DeleteTariffOptionTest extends TestCase {
         ])->id;
 
         return $this->deleteJson(
-            route('tariff.options.destroy', [$tariffId, $tariffOptionId])
+            route('tariffs.options.destroy', [$tariffId, $tariffOptionId])
         );
     }
 
