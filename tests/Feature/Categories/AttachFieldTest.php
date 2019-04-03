@@ -34,7 +34,7 @@ class AttachFieldTest extends TestCase {
         $fields = create(Field::class, [], 3)->pluck('id');
 
         $this->postJson(
-            route('categories.fields', $this->category->id), compact('fields')
+            route('categories.fields.store', $this->category->id), compact('fields')
         )->assertStatus(200)
             ->assertJsonStructure([
                 'message'
