@@ -61,11 +61,6 @@ class TransactionTest extends TestCase {
         $this->assertGuard(['id' => 14048343]);
     }
 
-    /** @test */
-    public function it_should_guarded_the_receipt_id_field()
-    {
-        $this->assertGuard(['receipt_id' => 14048343]);
-    }
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
