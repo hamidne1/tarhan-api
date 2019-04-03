@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 /**
  * @property integer id
  * @property mixed title
@@ -110,7 +111,7 @@ class Category extends Model
 
 
     /**
-     * The fields that belong to the category.
+     * The fields that belong to the this category.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function fields()
@@ -119,13 +120,24 @@ class Category extends Model
     }
 
     /**
-     * add a field to category
+     * add a field to this category
      * @param $data
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function addFields($data)
     {
         return $this->fields()->create($data);
+
+    }
+
+    /**
+     * The portfolios that belong to the this category.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function portfolio()
+    {
+
+        return $this->hasMany(Portfolio::class);
 
     }
 }
