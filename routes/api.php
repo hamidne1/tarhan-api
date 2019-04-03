@@ -40,7 +40,7 @@ Route::group(['namespace' => 'Authenticate'], function () {
 Route::apiResource('catalogs', 'CatalogsController')->except('show');
 Route::apiResource('categories', 'CategoriesController')->except('show');
 Route::apiResource('tariffs', 'TariffsController');
-Route::apiResource('tariff.options', 'TariffOptionsController')->except('show');
+Route::apiResource('tariffs.options', 'TariffOptionsController')->except('show');
 Route::apiResource('orders', 'OrdersController')->except('show', 'delete', 'update');
 Route::apiResource('order.receipts', 'OrderReceiptsController')->except('show');
 Route::post('payments/verify', 'VerifyController@verify')->name('payments.verify');
