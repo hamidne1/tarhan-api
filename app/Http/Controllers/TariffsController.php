@@ -29,9 +29,20 @@ class TariffsController extends Controller {
     }
 
     /**
+     * Display specific of the resource
+     *
+     * @param Tariff $tariff
+     * @return TariffResource
+     */
+    public function show(Tariff $tariff)
+    {
+        return new TariffResource($tariff);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -56,8 +67,8 @@ class TariffsController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -82,7 +93,7 @@ class TariffsController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
