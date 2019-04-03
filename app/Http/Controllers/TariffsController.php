@@ -34,11 +34,14 @@ class TariffsController extends Controller {
      * Display specific of the resource
      *
      * @param Tariff $tariff
+     * @param TariffService $service
      * @return TariffResource
      */
-    public function show(Tariff $tariff)
+    public function show(Tariff $tariff, TariffService $service)
     {
-        return new TariffResource($tariff);
+        return new TariffResource(
+            $service->show($tariff->id)
+        );
     }
 
     /**

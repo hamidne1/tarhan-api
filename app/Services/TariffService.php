@@ -34,4 +34,10 @@ class TariffService {
     }
 
 
+    public function show($id)
+    {
+        return Tariff::filter($this->filter)->findOrFail($id);
+    }
+
+
 }
