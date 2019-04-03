@@ -4,7 +4,6 @@ namespace Tests\Feature\Fields;
 
 use App\Models\Category;
 use App\Models\Field;
-use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class CreateFieldTest extends TestCase {
@@ -96,22 +95,6 @@ class CreateFieldTest extends TestCase {
             ->assertJsonValidationErrors('icon');
     }
 
-    /** @test */
-    public function it_required_the_valid_category_id()
-    {
-        $this->setData([
-            'category_id' => null
-        ])->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('category_id');
-
-        $this->setData([
-            'category_id' => 999
-        ])->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('category_id');
-    }
-
     # </editor-fold>
 
 
@@ -125,7 +108,7 @@ class CreateFieldTest extends TestCase {
                 'data', 'message'
             ]);
         $this->assertDatabaseHas(
-            'fields', Arr::except($this->data, 'category_id')
+            'fields', $this->data
         );
     }
 }

@@ -113,6 +113,6 @@ class EditFieldTest extends TestCase {
                 'message'
             ]);
 
-        $this->assertDatabaseHas('fields', Arr::except($this->data, 'category_id'));
+        $this->assertDatabaseHas('fields', $this->data);
     }
 }
