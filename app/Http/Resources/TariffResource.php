@@ -29,7 +29,8 @@ class TariffResource extends JsonResource {
             'price' => $this->price,
             'discount' => $this->discount,
             'icon' => $this->icon,
-            'category_id' => $this->category_id
+            'category_id' => $this->category_id,
+            'options' => TariffOptionResource::collection($this->whenLoaded('options'))
         ];
     }
 }

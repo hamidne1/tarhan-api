@@ -42,12 +42,10 @@ class GetTariffTest extends TestCase {
             'tariff_id' => $tariff->id
         ]);
 
-        $anotherOption = create(TariffOption::class);
 
         $this->getJson(route('tariffs.index', ['with' => 'options']))
             ->assertStatus(200)
             ->assertSee($tariff->title)
-            ->assertSee($option->title)
-            ->assertDontSee($anotherOption->title);
+            ->assertSee($option->title);
     }
 }
