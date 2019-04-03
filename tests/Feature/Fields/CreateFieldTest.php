@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class CreateFieldTest extends TestCase {
 
-
     #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
 
     /**
@@ -71,7 +70,6 @@ class CreateFieldTest extends TestCase {
     }
 
     # </editor-fold>
-
 
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
