@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReceiptResource;
 use App\Models\Order;
+use App\Services\ReceiptService;
 use Illuminate\Http\Request;
 
 class OrderReceiptsController extends Controller {
@@ -27,19 +29,20 @@ class OrderReceiptsController extends Controller {
      *
      * @param Request $request
      * @param Order $order
+     * @param ReceiptService $service
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request, Order $order)
+    public function store(Request $request, Order $order, ReceiptService $service)
     {
         $validated = $this->validate($request, [
             'price' => 'required|numeric'
         ]);
 
-        $receipt = $order->receipts()->create($validated);
+        $receipt = $service->store($order, $validated['price']);
 
         return $this->respondCreated(
-            'یک صورت حساب جدید ایجاد شد', $receipt
+            'یک صورت حساب جدید ایجاد شد', new ReceiptResource($receipt)
         );
 
     }
