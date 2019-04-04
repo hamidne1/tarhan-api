@@ -22,6 +22,7 @@ namespace App\Models;
  * @method static |Category findOrFail($category_id)
  * @method static |Category find($category_id)
  * @method static |Category create($data)
+ * @method static |\Illuminate\Database\Eloquent\Builder filter(\App\Filters\CategoryFilter $categoryFilters)
  */
 class Category extends Model {
 
@@ -36,6 +37,8 @@ class Category extends Model {
     protected $guarded = [
         'id', 'slug', 'catalog_id'
     ];
+
+    const With = ['tariffs', 'fields', 'widgets', 'contexts'];
 
     #-------------------------------------##   <editor-fold desc="Booting">   ##----------------------------------------------------#
 
@@ -55,6 +58,23 @@ class Category extends Model {
     }
 
     # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Scoping">   ##----------------------------------------------------#
+
+    /**
+     * send builder to filter object and apply that
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Filters\CategoryFilter $filters
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFilter($query, \App\Filters\CategoryFilter $filters)
+    {
+        return $filters->apply($query);
+    }
+
+    # </editor-fold>
+
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
@@ -86,6 +106,16 @@ class Category extends Model {
     public function fields()
     {
         return $this->belongsToMany(Field::class);
+    }
+
+    public function widgets()
+    {
+        return $this->hasMany(Widget::class);
+    }
+
+    public function contexts()
+    {
+        return $this->hasMany(Context::class);
     }
 
     /**
