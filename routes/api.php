@@ -41,8 +41,7 @@ Route::apiResource('catalogs', 'CatalogsController')->except('show');
 Route::apiResource('categories', 'CategoriesController')->except('show');
 Route::apiResource('fields', 'FieldsController')->except('show');
 Route::apiResource('categories.fields', 'CategoryFieldsController')->only('store');
-Route::apiResource('portfolio', 'PortfolioController');
-Route::get('portfolio/fields/{category_id}', 'PortfolioController@getFields')->name('portfolio.fields');
+Route::apiResource('portfolios', 'PortfoliosController');
 Route::apiResource('tariffs', 'TariffsController')->except('show');
 Route::apiResource('tariff.options', 'TariffOptionsController')->except('show');
 
