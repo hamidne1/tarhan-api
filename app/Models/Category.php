@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 /**
  * @property integer id
  * @property mixed title
@@ -16,11 +17,11 @@ namespace App\Models;
  *
  * @property Catalog catalog
  * @property \Illuminate\Support\Collection tariffs
+ * @property \Illuminate\Support\Collection fields
  *
  * @method static |Category findOrFail($category_id)
  * @method static |Category find($category_id)
  * @method static |Category create($data)
- * @method static |\Illuminate\Database\Eloquent\Builder filter(\App\Filters\CategoryFilter $categoryFilters)
  */
 class Category extends Model {
 
@@ -77,6 +78,26 @@ class Category extends Model {
         return $this->hasMany(Tariff::class);
     }
 
+    /**
+     * category fields
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function fields()
+    {
+        return $this->belongsToMany(Field::class);
+    }
+
+    /**
+     * category portfolios
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
+    }
+
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Methods">   ##----------------------------------------------------#
@@ -93,6 +114,7 @@ class Category extends Model {
             ->create($data);
     }
 
+
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
@@ -106,4 +128,5 @@ class Category extends Model {
     }
 
     # </editor-fold>
+
 }

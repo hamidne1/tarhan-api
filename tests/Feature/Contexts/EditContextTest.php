@@ -35,7 +35,7 @@ class EditContextTest extends TestCase {
      */
     protected function update($contextId = null)
     {
-        $contextId = $contextId ?: create(Context::class);
+        $contextId = $contextId ?: create(Context::class)->id;
 
         return $this->adminLogin()->putJson(
             route('contexts.update', $contextId), $this->data
