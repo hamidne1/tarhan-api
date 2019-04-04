@@ -2,110 +2,136 @@
 
 namespace Tests\Feature\Portfolios;
 
-use App\Models\Category;
-use App\Models\Field;
-use App\Models\Multimedia;
 use App\Models\Portfolio;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreatePortfolioTest extends TestCase
-{
-    use RefreshDatabase;
+class CreatePortfolioTest extends TestCase {
+
+    #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
+
     /**
      * @var $data
      */
     protected $data;
 
+
     /**
      * set data property
      *
      * @param array $override
-     * @param null $path
      * @return CreatePortfolioTest
      */
-    protected function setData($override = [], $path = '')
+    protected function setData($override = [])
     {
-
         $this->data = raw(Portfolio::class, $override);
-        $field = raw(Field::class);
-        Category::findOrFail($this->data['category_id'])->addFields($field);
-        $this->data = array_merge($this->data, ['path' => $path]);
+
         return $this;
     }
 
     /**
-     * send the request to store the category
+     * send the request to store the portfolio
      *
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
     protected function store()
     {
         return $this->adminLogin()->postJson(
-            route('portfolio.store'), $this->data
+            route('portfolios.store'), $this->data
         );
     }
 
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
+
     /** @test */
-    public function an_guest_can_not_create_new_portfolio()
+    public function guest_can_not_create_new_portfolio()
     {
-        $this->postJson(
-            route('portfolio.store'), []
-        )->assertStatus(401);
+        $this->setData()
+            ->postJson(
+                route('portfolios.store'), []
+            )->assertStatus(401);
     }
 
     /** @test */
     public function an_authenticated_customer_can_not_create_new_portfolio()
     {
-        $this->customerLogin()->postJson(
-            route('portfolio.store'), []
-        )->assertStatus(401);
+        $this->customerLogin()->setData()
+            ->postJson(
+                route('portfolios.store'), []
+            )->assertStatus(401);
     }
 
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
+
+    /** @test */
+    public function it_required_the_valid_category_id_for_portfolio()
+    {
+        $this->setData(['category_id' => null])
+            ->store()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('category_id');
+
+        $this->setData(['category_id' => 999])
+            ->store()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('category_id');
+    }
 
     /** @test */
     public function it_required_the_valid_title_for_portfolio()
     {
-
         $this->setData(['title' => null])
+            ->store()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('title');
+
+        $this->setData(['title' => 12342134])
             ->store()
             ->assertStatus(422)
             ->assertJsonValidationErrors('title');
     }
 
-
     /** @test */
-    public function it_required_the_valid_icon_for_portfolio()
+    public function it_can_take_the_description_for_portfolio()
     {
         $this->setData(['description' => null])
             ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('description');
+            ->assertJsonMissingValidationErrors('description');
+
+        $this->setData(['description' => 42523452345])
+            ->store()
+            ->assertJsonMissingValidationErrors('description');
     }
 
     /** @test */
-    public function it_nullable_valid_category_id()
+    public function it_can_take_the_valid_link_for_portfolio()
     {
-        $this->setData();
-        $this->data['category_id'] = null;
-        $this->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('category_id');
+        $this->setData(['link' => null])
+            ->store()
+            ->assertJsonMissingValidationErrors('link');
 
-        $this->setData(['category_id' => 999]);
-        $this->data['category_id'] = null;
-        $this->store()
+        $this->setData(['link' => 'string'])
+            ->store()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('category_id');
+            ->assertJsonValidationErrors('link');
     }
 
+    # </editor-fold>
+
+
     /** @test */
-    public function it_store_portfolio_in_database()
+    public function it_store_new_portfolio_to_database()
     {
-        $this->withoutExceptionHandling();
         $this->setData()
-           ->store();
+            ->store()
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'message', 'data'
+            ]);
 
+        $this->assertDatabaseHas('portfolios', $this->data);
     }
 }
