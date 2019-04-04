@@ -56,7 +56,7 @@ class ContextsController extends Controller {
     {
         $validated = $this->validate($request, [
             'category_id' => 'nullable|exists:categories,id',
-            'page_id' => 'required|exists:pages,id',
+            'page_id' => 'nullable|exists:pages,id',
             'parent_id' => 'nullable|exists:contexts,id',
             'slug' => 'required|unique:contexts,slug',
             'icon' => 'nullable',

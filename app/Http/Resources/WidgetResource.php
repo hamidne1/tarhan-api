@@ -19,7 +19,7 @@ class WidgetResource extends JsonResource {
             'category_id' => $this->category_id,
             'col' => $this->col,
             'group' => $this->group,
-            'title' => $this->title,
+            'slug' => $this->slug,
             'alt' => $this->alt,
             'href' => $this->href,
             'src' => $this->src

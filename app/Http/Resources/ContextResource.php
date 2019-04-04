@@ -17,6 +17,7 @@ class ContextResource extends JsonResource
         return [
             'id' => $this->id,
             'page_id' => $this->page_id,
+            'category_id' => $this->category_id,
             'slug' => $this->slug,
             'icon' => $this->icon,
             'href' => $this->href,
