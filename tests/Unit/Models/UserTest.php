@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Order;
 use App\Models\Token;
 use App\Models\User;
 use Tests\TestCase;
@@ -66,6 +67,21 @@ class UserTest extends TestCase {
             );
         });
     }
+
+    /** @test */
+    public function it_has_many_orders()
+    {
+        $orders = create(Order::class, [
+            'user_id' => $this->user->id
+        ], 2);
+
+        $orders->each(function ($order) {
+            $this->assertTrue(
+                $this->user->orders->contains($order)
+            );
+        });
+    }
+
 
     # </editor-fold>
 

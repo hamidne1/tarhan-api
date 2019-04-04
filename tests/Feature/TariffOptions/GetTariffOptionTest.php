@@ -16,7 +16,7 @@ class GetTariffOptionTest extends TestCase {
         ]);
         $anotherOption = create(TariffOption::class);
 
-        $this->getJson(route('tariff.options.index', $tariff->id))
+        $this->getJson(route('tariffs.options.index', $tariff->id))
             ->assertStatus(200)
             ->assertSee($option->title)
             ->assertDontSee($anotherOption->title);
@@ -29,7 +29,7 @@ class GetTariffOptionTest extends TestCase {
         create(TariffOption::class, [
             'tariff_id' => $tariff->id
         ]);
-        $this->getJson(route('tariff.options.index', $tariff->id))
+        $this->getJson(route('tariffs.options.index', $tariff->id))
             ->assertJsonStructure(
                 [
                     'data' => [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\TariffResource;
 use App\Models\Tariff;
+use App\Services\TariffService;
 use Illuminate\Http\Request;
 
 class TariffsController extends Controller {
@@ -13,25 +14,40 @@ class TariffsController extends Controller {
      */
     public function __construct()
     {
-        $this->middleware('auth:admin')->except('index');
+        $this->middleware('auth:admin')->except('index', 'show');
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param TariffService $service
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(TariffService $service)
     {
         return TariffResource::collection(
-            Tariff::all()
+            $service->get()
+        );
+    }
+
+    /**
+     * Display specific of the resource
+     *
+     * @param Tariff $tariff
+     * @param TariffService $service
+     * @return TariffResource
+     */
+    public function show(Tariff $tariff, TariffService $service)
+    {
+        return new TariffResource(
+            $service->show($tariff->id)
         );
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -56,8 +72,8 @@ class TariffsController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -82,7 +98,7 @@ class TariffsController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */

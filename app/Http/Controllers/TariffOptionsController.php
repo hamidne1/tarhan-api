@@ -45,7 +45,6 @@ class TariffOptionsController extends Controller {
                     \App\Enums\OptionTypeEnum::values()
                 )
             ],
-            'tariff_id' => 'required|exists:tariffs,id'
         ]);
 
         $option = $tariff->options()->create($validated);

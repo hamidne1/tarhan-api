@@ -42,11 +42,13 @@ Route::apiResource('categories', 'CategoriesController')->except('show');
 Route::apiResource('fields', 'FieldsController')->except('show');
 Route::apiResource('categories.fields', 'CategoryFieldsController')->only('store');
 Route::apiResource('portfolios', 'PortfoliosController');
-Route::apiResource('tariffs', 'TariffsController')->except('show');
-Route::apiResource('tariff.options', 'TariffOptionsController')->except('show');
+Route::apiResource('tariffs', 'TariffsController');
+Route::apiResource('tariffs.options', 'TariffOptionsController')->except('show');
+Route::apiResource('orders', 'OrdersController')->except('show', 'delete', 'update');
+Route::apiResource('order.receipts', 'OrderReceiptsController')->except('show');
+Route::post('payments/verify', 'VerifyController@verify')->name('payments.verify');
 
 
 Route::apiResource('pages', 'PagesController')->except('show', 'update');
 Route::apiResource('widgets', 'WidgetsController')->except('show', 'index');
 Route::apiResource('contexts', 'ContextsController')->except('show', 'index');
-
