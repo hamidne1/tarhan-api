@@ -88,6 +88,16 @@ class Category extends Model {
         return $this->belongsToMany(Field::class);
     }
 
+    /**
+     * category portfolios
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
+    }
+
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Methods">   ##----------------------------------------------------#
@@ -104,6 +114,7 @@ class Category extends Model {
             ->create($data);
     }
 
+
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
@@ -118,15 +129,4 @@ class Category extends Model {
 
     # </editor-fold>
 
-
-    /**
-     * The portfolios that belong to the this category.
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function portfolio()
-    {
-
-        return $this->hasMany(Portfolio::class);
-
-    }
 }
