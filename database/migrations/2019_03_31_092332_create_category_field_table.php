@@ -16,6 +16,14 @@ class CreateCategoryFieldTable extends Migration
         Schema::create('category_field', function (Blueprint $table) {
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('field_id');
+
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('field_id')
+                ->references('id')->on('fields')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

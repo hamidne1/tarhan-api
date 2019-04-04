@@ -8,6 +8,7 @@ $factory->define(\App\Models\Portfolio::class, function (Faker $faker) {
             return factory(\App\Models\Category::class)->create()->id;
         },
         'title' => $faker->text,
-        'description' => $faker->sentence
+        'description' => $faker->sentence,
+        'link' => $faker->url
     ];
 });
