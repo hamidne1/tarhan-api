@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Fields;
 
-use App\Models\Category;
 use App\Models\Field;
-use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class EditFieldTest extends TestCase {
@@ -16,10 +14,6 @@ class EditFieldTest extends TestCase {
      */
     protected $data;
 
-    /**
-     * @var Category $category
-     */
-    protected $category;
 
     /**
      * set data property
@@ -29,10 +23,7 @@ class EditFieldTest extends TestCase {
      */
     protected function setData($override = [])
     {
-        $this->category = create(Category::class);
-        $this->data = raw(Field::class, array_merge($override, [
-            'category_id' => $this->category->id
-        ]));
+        $this->data = raw(Field::class, $override);
 
         return $this;
     }
@@ -93,11 +84,6 @@ class EditFieldTest extends TestCase {
         $this->setData(['icon' => null])
             ->update()
             ->assertJsonMissingValidationErrors('icon');
-
-        $this->setData(['icon' => 424])
-            ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('icon');
     }
 
     # </editor-fold?

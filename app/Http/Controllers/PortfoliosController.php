@@ -80,8 +80,8 @@ class PortfoliosController extends Controller {
     public function update(Request $request, Portfolio $portfolio)
     {
         $validated = $this->validate($request, [
-            'title' => 'required|string',
-            'description' => 'nullable|string',
+            'title' => 'required',
+            'description' => 'nullable',
             'link' => 'nullable|url',
             'category_id' => 'required|exists:categories,id'
         ]);

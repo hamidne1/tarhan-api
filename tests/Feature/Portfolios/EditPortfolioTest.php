@@ -90,11 +90,6 @@ class EditPortfolioTest extends TestCase {
             ->update()
             ->assertStatus(422)
             ->assertJsonValidationErrors('title');
-
-        $this->setData(['title' => 12342134])
-            ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('title');
     }
 
     /** @test */
@@ -104,9 +99,6 @@ class EditPortfolioTest extends TestCase {
             ->update()
             ->assertJsonMissingValidationErrors('description');
 
-        $this->setData(['description' => 42523452345])
-            ->update()
-            ->assertJsonMissingValidationErrors('description');
     }
 
     /** @test */
@@ -130,7 +122,7 @@ class EditPortfolioTest extends TestCase {
     {
         $this->setData()
             ->update()
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJsonStructure([
                 'message', 'data'
             ]);

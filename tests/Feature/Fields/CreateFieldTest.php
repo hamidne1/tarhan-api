@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Fields;
 
-use App\Models\Category;
 use App\Models\Field;
 use Tests\TestCase;
 
@@ -15,10 +14,6 @@ class CreateFieldTest extends TestCase {
      */
     protected $data;
 
-    /**
-     * @var Category $category
-     */
-    protected $category;
 
     /**
      * set data property
@@ -28,10 +23,7 @@ class CreateFieldTest extends TestCase {
      */
     protected function setData($override = [])
     {
-        $this->category = create(Category::class);
-        $this->data = raw(Field::class, array_merge($override, [
-            'category_id' => $this->category->id
-        ]));
+        $this->data = raw(Field::class, $override);
 
         return $this;
     }
@@ -88,11 +80,6 @@ class CreateFieldTest extends TestCase {
         $this->setData(['icon' => null])
             ->store()
             ->assertJsonMissingValidationErrors('icon');
-
-        $this->setData(['icon' => 13534])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('icon');
     }
 
     # </editor-fold>

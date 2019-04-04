@@ -87,21 +87,12 @@ class CreatePortfolioTest extends TestCase {
             ->store()
             ->assertStatus(422)
             ->assertJsonValidationErrors('title');
-
-        $this->setData(['title' => 12342134])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('title');
     }
 
     /** @test */
     public function it_can_take_the_description_for_portfolio()
     {
         $this->setData(['description' => null])
-            ->store()
-            ->assertJsonMissingValidationErrors('description');
-
-        $this->setData(['description' => 42523452345])
             ->store()
             ->assertJsonMissingValidationErrors('description');
     }
@@ -125,6 +116,7 @@ class CreatePortfolioTest extends TestCase {
     /** @test */
     public function it_store_new_portfolio_to_database()
     {
+//        $this->withoutExceptionHandling();
         $this->setData()
             ->store()
             ->assertStatus(201)

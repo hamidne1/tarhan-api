@@ -17,6 +17,12 @@ class FieldsController extends Controller {
         $this->middleware('auth:admin')->except('index');
     }
 
+    public function index()
+    {
+        return FieldResource::collection(
+            Field::all()
+        );
+    }
 
     /**
      * Store
@@ -33,7 +39,7 @@ class FieldsController extends Controller {
     {
         $validated = $this->validate($request, [
             'title' => 'required',
-            'icon' => 'required',
+            'icon' => 'nullable',
         ]);
 
         $field = Field::create($validated);
@@ -61,7 +67,7 @@ class FieldsController extends Controller {
     {
         $validated = $this->validate($request, [
             'title' => 'required',
-            'icon' => 'required',
+            'icon' => 'nullable',
         ]);
 
         Field::findOrFail($id)->update($validated);
