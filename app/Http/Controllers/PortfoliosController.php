@@ -73,7 +73,7 @@ class PortfoliosController extends Controller {
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param Portfolio $portfolio
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -82,7 +82,8 @@ class PortfoliosController extends Controller {
         $validated = $this->validate($request, [
             'title' => 'required|string',
             'description' => 'nullable|string',
-            'link' => 'nullable|url'
+            'link' => 'nullable|url',
+            'category_id' => 'required|exists:categories,id'
         ]);
 
         $portfolio->update($validated);
