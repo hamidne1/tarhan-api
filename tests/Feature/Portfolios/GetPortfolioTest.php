@@ -2,36 +2,35 @@
 
 namespace Tests\Feature\Portfolios;
 
-use App\Models\Multimedia;
+use App\Models\Portfolio;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class GetPortfolioTest extends TestCase
-{
+class GetPortfolioTest extends TestCase {
     /** @test */
-    public function it_see_portfolios_in_route_portfolios_index()
+    public function it_see_portfolio_in_route_portfolios_index()
     {
-        $this->withoutExceptionHandling();
-        $multimedia = create(Multimedia::class);
-        $this->adminLogin()->getJson(route('portfolio.index'))
+        $portfolio = create(Portfolio::class);
+        $this->getJson(route('portfolios.index'))
+            ->assertStatus(200)
+            ->assertSee($portfolio->title);
+    }
+
+    /** @test */
+    public function it_see_portfolio_in_route_portfolios_index_in_this_format()
+    {
+        create(Portfolio::class);
+
+        $this->getJson(route('portfolios.index'))
             ->assertJsonStructure(
-
                 [
-                    [
-                        "id",
-                        "category_id",
-                        "title",
-                        "description",
-
+                    'data' => [
+                        [
+                            'id', 'title', 'link', 'description', 'category_id'
+                        ]
                     ]
                 ]
-
-
             );
-        dd($multimedia->portfolio->toArray());
-//            ->assertStatus(200)
-//            ->assertSee($multimedia->portfolio->toArray());
-//            ->assertSee($multimedia->portfolio->path);
     }
+
+
 }
