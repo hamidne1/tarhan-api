@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @method static|Widget findOrFail(int $id)
+ * @method static |Widget findOrFail(int $id)
  */
 class Widget extends Model {
 
@@ -32,6 +32,30 @@ class Widget extends Model {
     {
         return $this->belongsTo(Page::class);
     }
+
+    /**
+     * widget category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
+
+    /**
+     * create slug from the title of product
+     *
+     * @param $value
+     */
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = \Illuminate\Support\Str::slug($value);
+    }
+
 
     # </editor-fold>
 }

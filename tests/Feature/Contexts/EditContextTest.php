@@ -72,13 +72,25 @@ class EditContextTest extends TestCase {
     {
         $this->setData(['page_id' => null])
             ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('page_id');
+            ->assertJsonMissingValidationErrors('page_id');
 
         $this->setData(['page_id' => 999])
             ->update()
             ->assertStatus(422)
             ->assertJsonValidationErrors('page_id');
+    }
+
+    /** @test */
+    public function it_required_the_valid_category_for_context()
+    {
+        $this->setData(['category_id' => null])
+            ->update()
+            ->assertJsonMissingValidationErrors('category_id');
+
+        $this->setData(['category_id' => 999])
+            ->update()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('category_id');
     }
 
     /** @test */

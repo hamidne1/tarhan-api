@@ -16,6 +16,7 @@ class CreateContextsTable extends Migration {
             $table->increments('id');
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('page_id')->nullable();
+            $table->unsignedInteger('category_id')->nullable();
 
             $table->string('slug')->unique();
 
@@ -29,6 +30,10 @@ class CreateContextsTable extends Migration {
 
             $table->foreign('page_id')
                 ->references('id')->on('pages')
+                ->onDelete('set null')->onUpdate('cascade');
+
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
                 ->onDelete('set null')->onUpdate('cascade');
         });
     }

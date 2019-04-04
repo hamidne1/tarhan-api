@@ -8,6 +8,9 @@ $factory->define(\App\Models\Context::class, function (Faker $faker) {
         'page_id' => function () {
             return factory(\App\Models\Page::class)->create()->id;
         },
+        'category_id' => function () {
+            return factory(\App\Models\Category::class)->create()->id;
+        },
         'slug' => $faker->slug,
         'icon' => $faker->title,
         'href' => $faker->url,

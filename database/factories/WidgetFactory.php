@@ -12,7 +12,7 @@ $factory->define(\App\Models\Widget::class, function (Faker $faker) {
         },
         'col' => $faker->randomDigit,
         'group' => $faker->randomElement(\App\Enums\ContentGroupEnum::values()),
-        'title' => $faker->title,
+        'slug' => $faker->slug,
         'alt' => $faker->jobTitle,
         'href' => $faker->url,
         'src' => $faker->imageUrl()

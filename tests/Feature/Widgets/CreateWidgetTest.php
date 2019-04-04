@@ -66,12 +66,11 @@ class CreateWidgetTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
     /** @test */
-    public function it_required_the_valid_page_for_widget()
+    public function it_can_take_the_valid_page_for_widget()
     {
         $this->setData(['page_id' => null])
             ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('page_id');
+            ->assertJsonMissingValidationErrors('page_id');
 
         $this->setData(['page_id' => 999])
             ->store()
@@ -117,12 +116,17 @@ class CreateWidgetTest extends TestCase {
     }
 
     /** @test */
-    public function it_required_the_valid_title_for_widget()
+    public function it_required_the_valid_slug_for_widget()
     {
-        $this->setData(['title' => null])
+        $this->setData(['slug' => null])
             ->store()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('title');
+            ->assertJsonValidationErrors('slug');
+
+        $this->setData(['slug' => create(Widget::class)->slug])
+            ->store()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('slug');
     }
 
     /** @test */
@@ -163,7 +167,6 @@ class CreateWidgetTest extends TestCase {
     /** @test */
     public function it_store_new_widget_to_database()
     {
-        $this->withoutExceptionHandling();
         $this->setData()
             ->store()
             ->assertStatus(201)

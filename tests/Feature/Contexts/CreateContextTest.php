@@ -70,13 +70,25 @@ class CreateContextTest extends TestCase {
     {
         $this->setData(['page_id' => null])
             ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('page_id');
+            ->assertJsonMissingValidationErrors('page_id');
 
         $this->setData(['page_id' => 999])
             ->store()
             ->assertStatus(422)
             ->assertJsonValidationErrors('page_id');
+    }
+
+    /** @test */
+    public function it_required_the_valid_category_id_for_context()
+    {
+        $this->setData(['category_id' => null])
+            ->store()
+            ->assertJsonMissingValidationErrors('category_id');
+
+        $this->setData(['category_id' => 999])
+            ->store()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('category_id');
     }
 
     /** @test */

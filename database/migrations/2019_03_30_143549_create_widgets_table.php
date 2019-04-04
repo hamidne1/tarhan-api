@@ -19,7 +19,7 @@ class CreateWidgetsTable extends Migration
             $table->unsignedInteger('page_id')->nullable();
             $table->string('col');
             $table->enum('group', \App\Enums\ContentGroupEnum::values());
-            $table->string('title');
+            $table->string('slug')->unique();
             $table->string('alt');
             $table->string('href');
             $table->string('src');

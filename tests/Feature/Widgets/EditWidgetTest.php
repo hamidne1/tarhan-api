@@ -72,8 +72,7 @@ class EditWidgetTest extends TestCase {
     {
         $this->setData(['page_id' => null])
             ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('page_id');
+            ->assertJsonMissingValidationErrors('page_id');
 
         $this->setData(['page_id' => 999])
             ->update()
@@ -119,12 +118,17 @@ class EditWidgetTest extends TestCase {
     }
 
     /** @test */
-    public function it_required_the_valid_title_for_widget()
+    public function it_required_the_valid_slug_for_widget()
     {
-        $this->setData(['title' => null])
+        $this->setData(['slug' => null])
             ->update()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('title');
+            ->assertJsonValidationErrors('slug');
+
+        $this->setData(['slug' => create(Widget::class)->slug])
+            ->update()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('slug');
     }
 
     /** @test */

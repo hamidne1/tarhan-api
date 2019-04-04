@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\WidgetResource;
-use App\Models\Page;
 use App\Models\Widget;
 use Illuminate\Http\Request;
 
@@ -22,14 +21,14 @@ class WidgetsController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
         $validated = $this->validate($request, [
-            'page_id' => 'required|exists:pages,id',
+            'page_id' => 'nullable|exists:pages,id',
             'category_id' => 'nullable|exists:categories,id',
             'col' => 'required',
             'group' => [
@@ -41,7 +40,7 @@ class WidgetsController extends Controller {
             'src' => 'required'
         ]);
 
-        $widget = Page::findOrFail($validated['page_id'])->addWidget($validated);
+        $widget = Widget::create($validated);
 
         return $this->respondCreated(
             'یک ویجت جدید ایجاد شد', new WidgetResource($widget)
@@ -52,8 +51,8 @@ class WidgetsController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -82,7 +81,7 @@ class WidgetsController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */

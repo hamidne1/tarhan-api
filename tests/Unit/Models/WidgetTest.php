@@ -55,8 +55,6 @@ class WidgetTest extends TestCase {
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
-    # </editor-fold>
-
     /** @test */
     public function it_belongs_to_a_page()
     {
@@ -66,4 +64,17 @@ class WidgetTest extends TestCase {
 
         $this->assertEquals($page->toArray(), $widget->page->toArray());
     }
+
+    /** @test */
+    public function it_belongs_to_a_category()
+    {
+
+        $category = create('App\Models\Category');
+        $widget = create(Widget::class, ['category_id' => $category->id]);
+
+        $this->assertEquals($category->toArray(), $widget->category->toArray());
+    }
+    # </editor-fold>
+
+
 }

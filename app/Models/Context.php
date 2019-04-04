@@ -32,6 +32,16 @@ class Context extends Model {
         return $this->belongsTo(Page::class);
     }
 
+    /**
+     * context category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Mutator">   ##----------------------------------------------------#
