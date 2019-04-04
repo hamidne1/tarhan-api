@@ -17,7 +17,7 @@ class Portfolio extends Model
      * {@inheritDoc}
      */
     protected $guarded = [
-        'id', 'category_id'
+        'id'
     ];
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
