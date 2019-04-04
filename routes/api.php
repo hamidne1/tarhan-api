@@ -38,7 +38,7 @@ Route::group(['namespace' => 'Authenticate'], function () {
 
 
 Route::apiResource('catalogs', 'CatalogsController')->except('show');
-Route::apiResource('categories', 'CategoriesController')->except('show');
+Route::apiResource('categories', 'CategoriesController');
 Route::apiResource('fields', 'FieldsController')->except('show');
 Route::apiResource('categories.fields', 'CategoryFieldsController')->only('store');
 Route::apiResource('portfolios', 'PortfoliosController');

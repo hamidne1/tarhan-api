@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Services\CategoryService;
 
 /**
  * @group Catalogs
@@ -21,7 +22,7 @@ class CategoriesController extends Controller {
      */
     public function __construct()
     {
-        $this->middleware('auth:admin')->except('index');
+        $this->middleware('auth:admin')->except('index', 'show');
     }
 
     /**
@@ -29,12 +30,20 @@ class CategoriesController extends Controller {
      * Index
      * Display a listing of the categories resources.
      *
+     * @param CategoryService $service
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(CategoryService $service)
     {
         return CategoryResource::collection(
-            Category::all()
+            $service->get()
+        );
+    }
+
+    public function show(CategoryService $service, $id)
+    {
+        return new CategoryResource(
+            $service->show($id)
         );
     }
 
@@ -46,7 +55,7 @@ class CategoriesController extends Controller {
      * @bodyParam label string required The UNIQUE label of the categories.
      * @bodyParam catalog_id string required The UNIQUE label of the categories.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
@@ -75,7 +84,7 @@ class CategoriesController extends Controller {
      * @bodyParam title string required The UNIQUE title of the category.
      * @bodyParam label string required The UNIQUE label of the category.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @param $id
      *
      * @return \Illuminate\Http\JsonResponse
