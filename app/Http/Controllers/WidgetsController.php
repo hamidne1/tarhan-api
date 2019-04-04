@@ -34,7 +34,7 @@ class WidgetsController extends Controller {
             'group' => [
                 'required', \Illuminate\Validation\Rule::in(\App\Enums\ContentGroupEnum::values())
             ],
-            'title' => 'required',
+            'slug' => 'required|unique:widgets,slug',
             'alt' => 'required',
             'href' => 'required|url',
             'src' => 'required'
@@ -59,13 +59,13 @@ class WidgetsController extends Controller {
     public function update(Request $request, $id)
     {
         $validated = $this->validate($request, [
-            'page_id' => 'required|exists:pages,id',
+            'page_id' => 'nullable|exists:pages,id',
             'category_id' => 'nullable|exists:categories,id',
             'col' => 'required',
             'group' => [
                 'required', \Illuminate\Validation\Rule::in(\App\Enums\ContentGroupEnum::values())
             ],
-            'title' => 'required',
+            'slug' => 'required|unique:widgets,slug',
             'alt' => 'required',
             'href' => 'required|url',
             'src' => 'required'
