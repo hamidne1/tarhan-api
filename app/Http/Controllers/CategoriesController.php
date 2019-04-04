@@ -40,10 +40,10 @@ class CategoriesController extends Controller {
         );
     }
 
-    public function show(CategoryService $service, $id)
+    public function show(CategoryService $service, $slug)
     {
         return new CategoryResource(
-            $service->show($id)
+            $service->show($slug)
         );
     }
 

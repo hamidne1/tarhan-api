@@ -50,7 +50,7 @@ class GetCategoryTest extends TestCase {
         ]);
 
 
-        $this->getJson(route('categories.show', [$category->id, 'with' => 'widgets,contexts']))
+        $this->getJson(route('categories.show', [$category->slug, 'with' => 'widgets,contexts']))
             ->assertStatus(200)
             ->assertSee($category->title)
             ->assertSee($widget->title)

@@ -33,9 +33,9 @@ class CategoryService {
         return Category::filter($this->filter)->get();
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        return Category::filter($this->filter)->findOrFail($id);
+        return Category::filter($this->filter)->where('slug' , $slug)->firstOrFail();
     }
 
 }
