@@ -124,7 +124,7 @@ class EditPortfolioTest extends TestCase {
             ->update()
             ->assertStatus(200)
             ->assertJsonStructure([
-                'message', 'data'
+                'message'
             ]);
 
         $this->assertDatabaseHas('portfolios', $this->data);
