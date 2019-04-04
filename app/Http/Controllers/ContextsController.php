@@ -27,7 +27,8 @@ class ContextsController extends Controller {
     public function store(Request $request)
     {
         $validated = $this->validate($request, [
-            'page_id' => 'required|exists:pages,id',
+            'page_id' => 'nullable|exists:pages,id',
+            'category_id' => 'nullable|exists:categories,id',
             'parent_id' => 'nullable|exists:contexts,id',
             'slug' => 'required|unique:contexts,slug',
             'icon' => 'nullable',
@@ -54,6 +55,7 @@ class ContextsController extends Controller {
     public function update(Request $request, $id)
     {
         $validated = $this->validate($request, [
+            'category_id' => 'nullable|exists:categories,id',
             'page_id' => 'required|exists:pages,id',
             'parent_id' => 'nullable|exists:contexts,id',
             'slug' => 'required|unique:contexts,slug',
