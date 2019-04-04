@@ -4,16 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Field extends Model
-{
+class Field extends Model {
 
-    protected $fillable = ['title', 'icon'];
     /**
-     * The categories that belong to the field.
+     * {@inheritDoc}
+     */
+    public $timestamps = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $guarded = [
+        'id'
+    ];
+
+    #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
+
+    /**
+     * field categories
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categories()
     {
-        return $this->belongsToMany('App\Model\Category');
+        return $this->belongsToMany(Category::class);
     }
 
+    # </editor-fold>
 }

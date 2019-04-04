@@ -17,14 +17,13 @@ namespace App\Models;
  *
  * @property Catalog catalog
  * @property \Illuminate\Support\Collection tariffs
+ * @property \Illuminate\Support\Collection fields
  *
  * @method static |Category findOrFail($category_id)
  * @method static |Category find($category_id)
  * @method static |Category create($data)
- * @method static |\Illuminate\Database\Eloquent\Builder filter(\App\Filters\CategoryFilter $categoryFilters)
  */
-class Category extends Model
-{
+class Category extends Model {
 
     /**
      * {@inheritDoc}
@@ -79,6 +78,16 @@ class Category extends Model
         return $this->hasMany(Tariff::class);
     }
 
+    /**
+     * category fields
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function fields()
+    {
+        return $this->belongsToMany(Field::class);
+    }
+
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The Methods">   ##----------------------------------------------------#
@@ -109,26 +118,6 @@ class Category extends Model
 
     # </editor-fold>
 
-
-    /**
-     * The fields that belong to the this category.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function fields()
-    {
-        return $this->belongsToMany('App\Models\Field', 'category_field');
-    }
-
-    /**
-     * add a field to this category
-     * @param $data
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function addFields($data)
-    {
-        return $this->fields()->create($data);
-
-    }
 
     /**
      * The portfolios that belong to the this category.

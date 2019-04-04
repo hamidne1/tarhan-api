@@ -3,19 +3,22 @@
 namespace Tests\Feature\Fields;
 
 use App\Models\Category;
-use App\Models\Category_field;
 use App\Models\Field;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreateFieldTest extends TestCase
-{
-    use RefreshDatabase;
+class CreateFieldTest extends TestCase {
+
+    #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
+
     /**
      * @var $data
      */
     protected $data;
+
+    /**
+     * @var Category $category
+     */
+    protected $category;
 
     /**
      * set data property
@@ -25,9 +28,11 @@ class CreateFieldTest extends TestCase
      */
     protected function setData($override = [])
     {
+        $this->category = create(Category::class);
+        $this->data = raw(Field::class, array_merge($override, [
+            'category_id' => $this->category->id
+        ]));
 
-        $this->data = raw(Field::class, $override);
-        $this->data = array_merge($this->data, ['category_id' => create(Category::class)->id]);
         return $this;
     }
 
@@ -38,12 +43,14 @@ class CreateFieldTest extends TestCase
      */
     protected function store()
     {
-
         return $this->adminLogin()->postJson(
             route('fields.store'), $this->data
         );
     }
 
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Security">   ##----------------------------------------------------#
 
     /** @test */
     public function an_guest_can_not_create_new_field()
@@ -61,10 +68,13 @@ class CreateFieldTest extends TestCase
         )->assertStatus(401);
     }
 
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
+
     /** @test */
     public function it_required_the_valid_title_for_field()
     {
-
         $this->setData(['title' => null])
             ->store()
             ->assertStatus(422)
@@ -73,29 +83,20 @@ class CreateFieldTest extends TestCase
 
 
     /** @test */
-    public function it_required_the_valid_icon_for_field()
+    public function it_can_take_the_valid_icon_for_field()
     {
         $this->setData(['icon' => null])
+            ->store()
+            ->assertJsonMissingValidationErrors('icon');
+
+        $this->setData(['icon' => 13534])
             ->store()
             ->assertStatus(422)
             ->assertJsonValidationErrors('icon');
     }
 
-    /** @test */
-    public function it_nullable_valid_category_id()
-    {
-        $this->setData();
-        $this->data['category_id'] = null;
-        $this->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('category_id');
+    # </editor-fold>
 
-        $this->setData(['category_id' => 999]);
-        $this->data['category_id'] = null;
-        $this->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('category_id');
-    }
 
     /** @test */
     public function it_store_field_in_database()
@@ -106,6 +107,8 @@ class CreateFieldTest extends TestCase
             ->assertJsonStructure([
                 'data', 'message'
             ]);
-        $this->assertDatabaseHas('fields', array_except($this->data, ['category_id']));
+        $this->assertDatabaseHas(
+            'fields', $this->data
+        );
     }
 }

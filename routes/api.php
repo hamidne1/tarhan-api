@@ -39,7 +39,8 @@ Route::group(['namespace' => 'Authenticate'], function () {
 
 Route::apiResource('catalogs', 'CatalogsController')->except('show');
 Route::apiResource('categories', 'CategoriesController')->except('show');
-Route::apiResource('fields', 'FieldController')->except('index', 'create' . 'edit');
+Route::apiResource('fields', 'FieldsController')->except('show');
+Route::apiResource('categories.fields', 'CategoryFieldsController')->only('store');
 Route::apiResource('portfolio', 'PortfolioController');
 Route::get('portfolio/fields/{category_id}', 'PortfolioController@getFields')->name('portfolio.fields');
 Route::apiResource('tariffs', 'TariffsController')->except('show');

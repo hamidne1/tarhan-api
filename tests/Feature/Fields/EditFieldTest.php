@@ -6,16 +6,20 @@ use App\Models\Category;
 use App\Models\Field;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class EditFieldTest extends TestCase
-{
-    use RefreshDatabase;
+class EditFieldTest extends TestCase {
+
+    #-------------------------------------##   <editor-fold desc="setUp">   ##----------------------------------------------------#
+
     /**
      * @var $data
      */
     protected $data;
+
+    /**
+     * @var Category $category
+     */
+    protected $category;
 
     /**
      * set data property
@@ -25,9 +29,12 @@ class EditFieldTest extends TestCase
      */
     protected function setData($override = [])
     {
-        $this->data = raw(Field::class, $override);
-        return $this;
+        $this->category = create(Category::class);
+        $this->data = raw(Field::class, array_merge($override, [
+            'category_id' => $this->category->id
+        ]));
 
+        return $this;
     }
 
     /**
@@ -42,9 +49,13 @@ class EditFieldTest extends TestCase
 
         return $this->adminLogin()
             ->putJson(
-                route('fields.update', ['field' => $fieldId]), $this->data
+                route('fields.update', $fieldId), $this->data
             );
     }
+
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="Security">   ##----------------------------------------------------#
 
     /** @test */
     public function an_guest_can_not_edit_field()
@@ -62,6 +73,10 @@ class EditFieldTest extends TestCase
         )->assertStatus(401);
     }
 
+    # </editor-fold>
+
+    #-------------------------------------##   <editor-fold desc="Validation">   ##----------------------------------------------------#
+
     /** @test */
     public function it_required_the_valid_title_for_field()
     {
@@ -73,16 +88,23 @@ class EditFieldTest extends TestCase
     }
 
     /** @test */
-    public function it_required_the_valid_icon_for_field()
+    public function it_can_take_the_valid_icon_for_field()
     {
         $this->setData(['icon' => null])
+            ->update()
+            ->assertJsonMissingValidationErrors('icon');
+
+        $this->setData(['icon' => 424])
             ->update()
             ->assertStatus(422)
             ->assertJsonValidationErrors('icon');
     }
 
+    # </editor-fold?
+
+
     /** @test */
-    public function it_store_field_in_database()
+    public function it_update_field_in_database()
     {
         $this->setData()
             ->update()

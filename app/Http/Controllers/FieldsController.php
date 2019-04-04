@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\FieldResource;
-use App\Models\Category;
 use App\Models\Field;
 use Illuminate\Http\Request;
 
-class FieldController extends Controller
-{
-
+class FieldsController extends Controller {
 
     /**
      * FieldController constructor.
@@ -17,7 +14,7 @@ class FieldController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:admin');
+        $this->middleware('auth:admin')->except('index');
     }
 
 
@@ -28,7 +25,7 @@ class FieldController extends Controller
      * @bodyParam title string required The  title of the field.
      * @bodyParam label string required The  icon of the field.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -36,34 +33,14 @@ class FieldController extends Controller
     {
         $validated = $this->validate($request, [
             'title' => 'required',
-            'icon' => 'required'
+            'icon' => 'required',
         ]);
 
-        $validated_id = $this->validate($request, [
-            'category_id' => 'required|exists:categories,id'
-        ]);
-
-        $category = Category::find((int)$validated_id);
-
-        $field = $category->addFields($validated);
+        $field = Field::create($validated);
 
         return $this->respondCreated(
             'یک فیلد جدید ایجاد شد', new FieldResource($field)
         );
-    }
-
-    /**
-     * show
-     * Display a listing of the fields resources.
-     *
-     * @param $id
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function show($id)
-    {
-        $category = Category::findOrFail($id);
-        return FieldResource::collection($category->fields);
-
     }
 
 
@@ -74,7 +51,7 @@ class FieldController extends Controller
      * @bodyParam title string required The  title of the field.
      * @bodyParam icon string required The  icon of the field.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @param $id
      *
      * @return \Illuminate\Http\JsonResponse
@@ -82,7 +59,6 @@ class FieldController extends Controller
      */
     public function update(\Illuminate\Http\Request $request, $id)
     {
-
         $validated = $this->validate($request, [
             'title' => 'required',
             'icon' => 'required',
@@ -102,7 +78,6 @@ class FieldController extends Controller
      */
     public function destroy($id)
     {
-
         Field::findOrFail($id)->delete();
 
         return $this->respondDeleted();
