@@ -18,7 +18,7 @@ class CreatePortfoliosTable extends Migration
             $table->unsignedInteger('category_id');
             $table->string('title');
             $table->text('description');
-            //$table->string('media_id')->nullable();
+            $table->string('media_id')->nullable();
             $table->timestamps();
         });
     }

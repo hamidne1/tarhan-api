@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFieldsTable extends Migration
+class AddPivotForValuesOfFields extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateFieldsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fields', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->string('icon');
-
+        Schema::create('pivot_fields_values', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedInteger("field_id");
+            $table->unsignedInteger('fields_values_id');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateFieldsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fields');
+        Schema::dropIfExists('pivot_fields_values');
     }
 }

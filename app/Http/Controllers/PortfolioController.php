@@ -22,41 +22,52 @@ class PortfolioController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function index()
     {
         $portfolios = Portfolio::all();
-
-       $i =0 ;
-        foreach ($portfolios as $portfolio ){
-
-
-
-       dd(array_merge(array($i => $portfolio->toArray() ,array('multimedia' => $portfolio->multimedia->toArray())));
-
+        $all_portfolios = [];
+        $i = 0;
+        foreach ($portfolios as $portfolio) {
+            array_merge($all_portfolios
+                , array($i => array_merge($portfolio->toArray()
+                    , array('multimedia' => $portfolio->multimedia->toArray()
+                    ))));
+            $i++;
         }
+        return $all_portfolios;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        //
+
+
+        $validated = $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'path' => 'nullable',
+            'category_id' => 'required|numeric|exists:categories,id'
+        ]);
+
+        $fields = $this->getFields($request->category_id);
+
+        $for_field_validation = [
+            $fields[0]['title'] => 'required|exists:fields,title',
+            $fields[0]['icon'] => 'required|exists:fields,icon',
+        ];
+        $validated_fields = $this->validate($request, $for_field_validation);
+
+
+
     }
 
     /**
@@ -78,9 +89,11 @@ class PortfolioController extends Controller
      */
     public function getFields($categoryId)
     {
+
         return Category::findOrFail($categoryId)->fields()->get()->toArray();
 
     }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -31,7 +31,7 @@ class Portfolio extends Model
     }
 
     /**
-     * The multimedia that belong to the this portfolio.
+     * add multimedia  to  this portfolio.
      * @param $data
      * @return Model
      */
@@ -42,4 +42,5 @@ class Portfolio extends Model
         return $this->hasMany(Multimedia::class)->create($data);
 
     }
+
 }
