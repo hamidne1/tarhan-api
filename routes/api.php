@@ -52,3 +52,5 @@ Route::post('payments/verify', 'VerifyController@verify')->name('payments.verify
 Route::apiResource('pages', 'PagesController')->except('show', 'update');
 Route::apiResource('widgets', 'WidgetsController')->except('show', 'index');
 Route::apiResource('contexts', 'ContextsController')->except('show', 'index');
+Route::apiResource('pages.widgets' , 'PageWidgetsController');
+Route::apiResource('pages.contexts' , 'PageContextsController');

@@ -4,7 +4,9 @@ namespace Tests\Unit\Models;
 
 use App\Models\Catalog;
 use App\Models\Category;
+use App\Models\Context;
 use App\Models\Tariff;
+use App\Models\Widget;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -123,7 +125,29 @@ class CategoryTest extends TestCase {
             );
         });
     }
+    /** @test */
+    public function it_has_many_contexts()
+    {
+        $contexts = create(Context::class, [
+            'category_id' => $this->category->id
+        ], 2);
 
+        $contexts->each(function ($context) {
+            static::assertTrue($this->category->contexts->contains($context));
+        });
+    }
+
+    /** @test */
+    public function it_has_many_widgets()
+    {
+        $widgets = create(Widget::class, [
+            'category_id' => $this->category->id
+        ], 2);
+
+        $widgets->each(function ($widget) {
+            static::assertTrue($this->category->widgets->contains($widget));
+        });
+    }
     # </editor-fold>
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
