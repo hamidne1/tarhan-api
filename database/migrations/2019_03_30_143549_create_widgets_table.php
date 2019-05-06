@@ -17,9 +17,9 @@ class CreateWidgetsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('category_id')->nullable();
             $table->unsignedInteger('page_id')->nullable();
-            $table->string('col');
-            $table->enum('group', \App\Enums\ContentGroupEnum::values());
-            $table->string('slug')->unique();
+            $table->string('col')->nullable();
+            $table->enum('group', \App\Enums\ContentGroupEnum::values())->nullable();
+            $table->string('slug')->nullable();
             $table->string('alt');
             $table->string('href');
             $table->string('src');
