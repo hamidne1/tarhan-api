@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Collection widgets
  * @property \Illuminate\Support\Collection contexts
  * @package App\Models
- * @method static|Page create(array $array)
- * @method static|Page findOrFail(int $id)
+ * @method static |\Illuminate\Database\Eloquent\Builder filter(\App\Filters\PageFilter $filter)
  */
 class Page extends Model {
     /**
@@ -26,13 +25,25 @@ class Page extends Model {
         'id'
     ];
 
+
+    const With = ['contexts', 'widgets'];
+
+    #-------------------------------------##   <editor-fold desc="The Scoping">   ##----------------------------------------------------#
+
     /**
-     * {@inheritDoc}
+     * send builder to filter object and apply that
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Filters\PageFilter $filters
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRouteKeyName()
+    public function scopeFilter($query, \App\Filters\PageFilter $filters)
     {
-        return 'slug';
+        return $filters->apply($query);
     }
+
+    # </editor-fold>
+
 
     #-------------------------------------##   <editor-fold desc="The RelationShips">   ##----------------------------------------------------#
 
