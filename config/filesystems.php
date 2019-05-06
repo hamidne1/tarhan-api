@@ -63,6 +63,11 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
         ],
+        'junk' => [
+            'driver' => 'local',
+            'root' => public_path('junk'),
+            'url' => env('APP_URL') . '/junk',
+        ],
 
     ],
 

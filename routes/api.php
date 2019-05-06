@@ -52,5 +52,12 @@ Route::post('payments/verify', 'VerifyController@verify')->name('payments.verify
 Route::apiResource('pages', 'PagesController')->except('show', 'update');
 Route::apiResource('widgets', 'WidgetsController')->except('show', 'index');
 Route::apiResource('contexts', 'ContextsController')->except('show', 'index');
-Route::apiResource('pages.widgets' , 'PageWidgetsController');
-Route::apiResource('pages.contexts' , 'PageContextsController');
+Route::apiResource('pages.widgets', 'PageWidgetsController');
+Route::apiResource('pages.contexts', 'PageContextsController');
+
+Route::group(['prefix' => config('media.route'), 'as' => 'media.', 'middleware' => config('media.middleware')], function () {
+    Route::post('', 'MediaManagerController@index')->name('index');
+    Route::post('create', 'MediaManagerController@create')->name('create');
+    Route::post('delete', 'MediaManagerController@delete')->name('delete');
+    Route::post('upload', 'MediaManagerController@upload')->name('upload');
+});
