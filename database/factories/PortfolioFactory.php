@@ -9,6 +9,7 @@ $factory->define(\App\Models\Portfolio::class, function (Faker $faker) {
         },
         'title' => $faker->sentence,
         'description' => $faker->sentence,
-        'link' => $faker->url
+        'link' => $faker->url,
+        'src' => $faker->url,
     ];
 });

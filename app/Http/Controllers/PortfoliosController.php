@@ -85,7 +85,7 @@ class PortfoliosController extends Controller {
             'description' => 'nullable',
             'link' => 'nullable|url',
             'category_id' => 'required|exists:categories,id',
-            'src' => 'nullable|string'
+            'src' => 'nullable|url'
         ]);
 
         $portfolio->update($validated);
