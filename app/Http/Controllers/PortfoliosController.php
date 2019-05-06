@@ -45,7 +45,7 @@ class PortfoliosController extends Controller {
             'description' => 'nullable|string',
             'link' => 'nullable|url',
             'category_id' => 'required|exists:categories,id',
-            'src' => 'nullable|string'
+            'src' => 'nullable|url'
         ]);
 
         $portfolio = Category::findOrFail($validated['category_id'])
