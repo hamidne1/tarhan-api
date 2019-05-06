@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContentGroupEnum;
 use App\Http\Resources\WidgetResource;
 use App\Models\Widget;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
+/**
+ * Class WidgetsController
+ *
+ * @group Widgets
+ *
+ * @package App\Http\Controllers\Contents
+ */
 class WidgetsController extends Controller {
 
     /**
@@ -14,27 +23,62 @@ class WidgetsController extends Controller {
      */
     public function __construct()
     {
-        $this->middleware('auth:admin');
+        $this->middleware('auth:admin')->except('index', 'show');
     }
 
+    /**
+     * Index
+     * showing all widget into database
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index()
+    {
+        return WidgetResource::collection(
+            Widget::all()
+        );
+    }
 
     /**
-     * Store a newly created resource in storage.
+     * Show
+     * showing specific widget into database
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Widget $widget
+     * @return WidgetResource
+     */
+    public function show(Widget $widget)
+    {
+        return new WidgetResource($widget);
+    }
+
+    /**
+     * Store
+     * create new widget into application
+     *
+     * @bodyParam page_id integer(exists) optional The page_id of the widget.
+     * @bodyParam category_id integer(exists) optional The category_id of the widget.
+     * @bodyParam col string required The col of the widget.
+     * @bodyParam group string(enum) required The group of the widget.
+     * @bodyParam slug string required The slug of the widget.
+     * @bodyParam alt string required The alt of the widget.
+     * @bodyParam href string required The href of the widget.
+     * @bodyParam src string required The src of the widget.
+     *
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
+
         $validated = $this->validate($request, [
             'page_id' => 'nullable|exists:pages,id',
             'category_id' => 'nullable|exists:categories,id',
-            'col' => 'required',
+            'col' => 'nullable|numeric',
+            'slug' => 'required_without:group|unique:widgets,slug',
             'group' => [
-                'required', \Illuminate\Validation\Rule::in(\App\Enums\ContentGroupEnum::values())
+                'required_without:slug', Rule::in(ContentGroupEnum::values())
             ],
-            'slug' => 'required|unique:widgets,slug',
             'alt' => 'required',
             'href' => 'required|url',
             'src' => 'required'
@@ -49,9 +93,19 @@ class WidgetsController extends Controller {
 
 
     /**
-     * Update the specified resource in storage.
+     * Update
+     * edit a widget from storage
      *
-     * @param \Illuminate\Http\Request $request
+     * @bodyParam page_id integer(exists) optional The page_id of the widget.
+     * @bodyParam category_id integer(exists) optional The category_id of the widget.
+     * @bodyParam col string required The col of the widget.
+     * @bodyParam group string(enum) required The group of the widget.
+     * @bodyParam slug string required The slug of the widget.
+     * @bodyParam alt string required The alt of the widget.
+     * @bodyParam href string required The href of the widget.
+     * @bodyParam src string required The src of the widget.
+     *
+     * @param Request $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
@@ -61,11 +115,10 @@ class WidgetsController extends Controller {
         $validated = $this->validate($request, [
             'page_id' => 'nullable|exists:pages,id',
             'category_id' => 'nullable|exists:categories,id',
-            'col' => 'required',
+            'col' => 'nullable|numeric',
             'group' => [
-                'required', \Illuminate\Validation\Rule::in(\App\Enums\ContentGroupEnum::values())
+                'nullable', Rule::in(ContentGroupEnum::values())
             ],
-            'slug' => 'required|unique:widgets,slug',
             'alt' => 'required',
             'href' => 'required|url',
             'src' => 'required'
@@ -79,7 +132,8 @@ class WidgetsController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Destroy
+     * delete a widget from storage
      *
      * @param int $id
      * @return \Illuminate\Http\JsonResponse

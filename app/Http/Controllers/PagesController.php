@@ -4,32 +4,51 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PageResource;
 use App\Models\Page;
+use App\Services\CM\PageService;
 use Illuminate\Http\Request;
 
+/**
+ * Class PagesController
+ *
+ * @group Pages
+ *
+ * @package App\Http\Controllers\Contents
+ */
 class PagesController extends Controller {
 
     /**
-     * PagesController constructor.
+     * @var PageService
      */
-    public function __construct()
+    protected $pageService;
+
+    /**
+     * PagesController constructor.
+     * @param PageService $service
+     */
+    public function __construct(PageService $service)
     {
         $this->middleware('auth:admin')->except('index');
+        $this->pageService = $service;
     }
 
     /**
-     * Display a listing of the resource.
+     * Index
+     * showing all pages has been created in
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
         return PageResource::collection(
-            Page::with('widgets', 'contexts')->get()
+            $this->pageService->get()
         );
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store
+     * create new page into application
+     *
+     * @bodyParam slug string(unique) required The slug of the page.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -50,11 +69,25 @@ class PagesController extends Controller {
         );
     }
 
+    /**
+     * Show
+     * showing specific page has been created in storage
+     *
+     * @param $id
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function show($id)
+    {
+        return PageResource::collection(
+            $this->pageService->show($id)
+        );
+    }
 
     /**
-     * Remove the specified resource from storage.
+     * Destroy
+     * delete a page from storage
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
@@ -63,7 +96,7 @@ class PagesController extends Controller {
         $page = Page::findOrFail($id);
 
         if ($page->hasWidget() || $page->hasContext())
-            return $this->respondWithErrors('امکان حذف وجود ندارد (به علت وجود ویدجت در این صفحه)');
+            return $this->respondWithErrors('امکان حذف وجود ندارد (به علت وجود ویدجت یا کانتکست در این صفحه)');
 
         $page->delete();
         return $this->respondDeleted();
