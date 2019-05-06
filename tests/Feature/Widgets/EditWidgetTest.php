@@ -3,6 +3,7 @@
 namespace Tests\Feature\Widgets;
 
 use App\Models\Widget;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class EditWidgetTest extends TestCase {
@@ -99,8 +100,8 @@ class EditWidgetTest extends TestCase {
     {
         $this->setData(['col' => null])
             ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('col');
+            ->assertStatus(200)
+            ->assertJsonMissingValidationErrors('col');
     }
 
     /** @test */
@@ -108,8 +109,7 @@ class EditWidgetTest extends TestCase {
     {
         $this->setData(['group' => null])
             ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('group');
+            ->assertJsonMissingValidationErrors('group');
 
         $this->setData(['group' => 'non of enums'])
             ->update()
@@ -117,19 +117,6 @@ class EditWidgetTest extends TestCase {
             ->assertJsonValidationErrors('group');
     }
 
-    /** @test */
-    public function it_required_the_valid_slug_for_widget()
-    {
-        $this->setData(['slug' => null])
-            ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('slug');
-
-        $this->setData(['slug' => create(Widget::class)->slug])
-            ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('slug');
-    }
 
     /** @test */
     public function it_required_the_valid_href_for_widget()
@@ -166,6 +153,6 @@ class EditWidgetTest extends TestCase {
                 'message'
             ]);
 
-        $this->assertDatabaseHas('widgets', $this->data);
+        $this->assertDatabaseHas('widgets', Arr::except($this->data, ['slug']));
     }
 }

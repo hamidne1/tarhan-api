@@ -66,7 +66,7 @@ class CreateWidgetTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
     /** @test */
-    public function it_can_take_the_valid_page_for_widget()
+    public function it_required_the_valid_page_for_widget()
     {
         $this->setData(['page_id' => null])
             ->store()
@@ -97,36 +97,28 @@ class CreateWidgetTest extends TestCase {
     {
         $this->setData(['col' => null])
             ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('col');
+            ->assertStatus(201)
+            ->assertJsonMissingValidationErrors('col');
     }
 
-    /** @test */
-    public function it_required_the_valid_group_for_widget()
-    {
-        $this->setData(['group' => null])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('group');
-
-        $this->setData(['group' => 'non of enums'])
-            ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('group');
-    }
 
     /** @test */
     public function it_required_the_valid_slug_for_widget()
     {
         $this->setData(['slug' => null])
             ->store()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('slug');
+            ->assertStatus(201)
+            ->assertJsonMissingValidationErrors('slug');
+    }
 
-        $this->setData(['slug' => create(Widget::class)->slug])
+    /** @test */
+    public function it_required_the_valid_group_for_widget()
+    {
+        $this->setData(['slug' => null,'group' => null])
             ->store()
             ->assertStatus(422)
-            ->assertJsonValidationErrors('slug');
+            ->assertJsonValidationErrors(['group' , 'slug']);
+
     }
 
     /** @test */

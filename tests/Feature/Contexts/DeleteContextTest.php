@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Widgets;
+namespace Tests\Feature\Contexts;
 
 use App\Models\Context;
 use Tests\TestCase;

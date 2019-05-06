@@ -3,6 +3,7 @@
 namespace Tests\Feature\Contexts;
 
 use App\Models\Context;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class EditContextTest extends TestCase {
@@ -35,7 +36,7 @@ class EditContextTest extends TestCase {
      */
     protected function update($contextId = null)
     {
-        $contextId = $contextId ?: create(Context::class)->id;
+        $contextId = $contextId ?: create(Context::class);
 
         return $this->adminLogin()->putJson(
             route('contexts.update', $contextId), $this->data
@@ -68,7 +69,7 @@ class EditContextTest extends TestCase {
     #-------------------------------------##   <editor-fold desc="The Validation">   ##----------------------------------------------------#
 
     /** @test */
-    public function it_required_the_valid_page_for_context()
+    public function it_required_the_valid_page_id_for_context()
     {
         $this->setData(['page_id' => null])
             ->update()
@@ -81,7 +82,7 @@ class EditContextTest extends TestCase {
     }
 
     /** @test */
-    public function it_required_the_valid_category_for_context()
+    public function it_required_the_valid_category_id_for_context()
     {
         $this->setData(['category_id' => null])
             ->update()
@@ -91,20 +92,6 @@ class EditContextTest extends TestCase {
             ->update()
             ->assertStatus(422)
             ->assertJsonValidationErrors('category_id');
-    }
-
-    /** @test */
-    public function it_required_the_valid_slug_for_context()
-    {
-        $this->setData(['slug' => null])
-            ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('slug');
-
-        $this->setData(['slug' => create(Context::class)->slug])
-            ->update()
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('slug');
     }
 
     /** @test */
@@ -163,8 +150,6 @@ class EditContextTest extends TestCase {
                 'message'
             ]);
 
-        $this->assertDatabaseHas('contexts', [
-            'slug' => $this->data['slug']
-        ]);
+        $this->assertDatabaseHas('contexts', Arr::except($this->data, ['slug' , 'value']));
     }
 }
