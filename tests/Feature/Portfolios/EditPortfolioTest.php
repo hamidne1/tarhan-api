@@ -114,6 +114,19 @@ class EditPortfolioTest extends TestCase {
             ->assertJsonValidationErrors('link');
     }
 
+    /** @test */
+    public function it_can_take_the_valid_src_for_portfolio()
+    {
+        $this->setData(['src' => null])
+            ->update()
+            ->assertJsonMissingValidationErrors('src');
+
+        $this->setData(['src' => 'string'])
+            ->update()
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('src');
+    }
+
     # </editor-fold>
 
 

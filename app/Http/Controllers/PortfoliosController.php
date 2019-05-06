@@ -44,7 +44,8 @@ class PortfoliosController extends Controller {
             'title' => 'required|string',
             'description' => 'nullable|string',
             'link' => 'nullable|url',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'src' => 'nullable|string'
         ]);
 
         $portfolio = Category::findOrFail($validated['category_id'])
@@ -83,7 +84,8 @@ class PortfoliosController extends Controller {
             'title' => 'required',
             'description' => 'nullable',
             'link' => 'nullable|url',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'src' => 'nullable|string'
         ]);
 
         $portfolio->update($validated);

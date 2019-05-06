@@ -17,6 +17,7 @@ class CreatePortfoliosTable extends Migration {
             $table->unsignedInteger('category_id');
             $table->string('title');
             $table->text('description')->nullable();
+            $table->text('src')->nullable();
             $table->string('link')->nullable();
 
             $table->foreign('category_id')
