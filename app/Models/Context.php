@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static|self findOrFail(int $id)
+ * @method static|self create(array $validated)
  */
 class Context extends Model {
     /**

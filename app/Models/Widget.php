@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static |Widget findOrFail(int $id)
+ * @method static|Widget create(array $validated)
  */
 class Widget extends Model {
 
