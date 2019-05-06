@@ -4,7 +4,13 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WidgetResource extends JsonResource {
+class WidgetResource extends JsonResource
+{
+    /**
+     * {@inheritDoc}
+     */
+    public static $wrap = null;
+
     /**
      * Transform the resource into an array.
      *

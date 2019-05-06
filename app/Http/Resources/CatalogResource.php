@@ -13,6 +13,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class CatalogResource extends JsonResource
 {
     /**
+     * {@inheritDoc}
+     */
+    public static $wrap = null;
+
+    /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request

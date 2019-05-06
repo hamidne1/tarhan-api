@@ -8,11 +8,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property integer id
  * @property string slug
  */
-class PageResource extends JsonResource {
+class PageResource extends JsonResource
+{
+    /**
+     * {@inheritDoc}
+     */
+    public static $wrap = null;
+
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
