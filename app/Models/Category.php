@@ -108,11 +108,21 @@ class Category extends Model {
         return $this->belongsToMany(Field::class);
     }
 
+    /**
+     * category widgets
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function widgets()
     {
         return $this->hasMany(Widget::class);
     }
 
+    /**
+     * category contexts
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function contexts()
     {
         return $this->hasMany(Context::class);
