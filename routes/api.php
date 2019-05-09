@@ -54,8 +54,9 @@ Route::apiResource('widgets', 'WidgetsController');
 Route::apiResource('contexts', 'ContextsController');
 Route::apiResource('pages.widgets', 'PageWidgetsController');
 Route::apiResource('pages.contexts', 'PageContextsController');
-Route::apiResource('categories.contexts', 'CategoryContextsController');
 Route::apiResource('categories.widgets', 'CategoryWidgetsController');
+Route::apiResource('categories.tariffs', 'CategoryTariffsController');
+Route::apiResource('categories.contexts', 'CategoryContextsController');
 
 Route::group(['prefix' => config('media.route'), 'as' => 'media.', 'middleware' => config('media.middleware')], function () {
     Route::post('', 'MediaManagerController@index')->name('index');
