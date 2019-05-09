@@ -6,6 +6,7 @@ use App\Http\Resources\ContextResource;
 use App\Http\Resources\TariffResource;
 use App\Models\Category;
 use App\Models\Context;
+use App\Models\Tariff;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -71,17 +72,17 @@ class CategoryTariffsController extends Controller
     public function store(Request $request, Category $category)
     {
         $validated = $this->validate($request, [
-            'parent_id' => 'nullable|exists:contexts,id',
-            'slug' => 'required|unique:contexts,slug',
-            'icon' => 'nullable',
-            'href' => 'nullable|url',
-            'value' => 'required',
+            'title' => 'required',
+            'sub_title' => 'required',
+            'price' => 'required',
+            'discount' => 'nullable|numeric',
+            'icon' => 'nullable'
         ]);
 
-        $context = $category->contexts()->create($validated);
+        $tariff = $category->tariffs()->create($validated);
 
         return $this->respondCreated(
-            'یک محتوای متنی جدید ایجاد شد', new ContextResource($context)
+            'یک تعرفه جدید ایجاد شد', new TariffResource($tariff)
         );
     }
 
@@ -105,16 +106,17 @@ class CategoryTariffsController extends Controller
     public function update(Request $request, Category $category, $id)
     {
         $validated = $this->validate($request, [
-            'parent_id' => 'nullable|exists:contexts,id',
-            'icon' => 'nullable',
-            'href' => 'nullable|url',
-            'value' => 'required',
+            'title' => 'required',
+            'sub_title' => 'required',
+            'price' => 'required',
+            'discount' => 'nullable|numeric',
+            'icon' => 'nullable'
         ]);
 
-        Context::findOrFail($id)->update($validated);
+        Tariff::findOrFail($id)->update($validated);
 
         return $this->respond(
-            'کانتکست مورد نظر بروزرسانی شد'
+            'بروزرسانی انجام شد'
         );
     }
 
@@ -129,7 +131,7 @@ class CategoryTariffsController extends Controller
      */
     public function destroy(Category $category, $id)
     {
-        $category->contexts()->findOrFail($id)->delete();
+        $category->tariffs()->findOrFail($id)->delete();
 
         return $this->respondDeleted();
     }
