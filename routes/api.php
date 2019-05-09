@@ -38,7 +38,6 @@ Route::group(['namespace' => 'Authenticate'], function () {
 
 
 Route::apiResource('catalogs', 'CatalogsController')->except('show');
-Route::apiResource('categories', 'CategoriesController');
 Route::apiResource('fields', 'FieldsController')->except('show');
 Route::apiResource('categories.fields', 'CategoryFieldsController')->only('store');
 Route::apiResource('portfolios', 'PortfoliosController');
@@ -52,8 +51,11 @@ Route::post('payments/verify', 'VerifyController@verify')->name('payments.verify
 Route::apiResource('pages', 'PagesController')->except('show', 'update');
 Route::apiResource('widgets', 'WidgetsController');
 Route::apiResource('contexts', 'ContextsController');
+
 Route::apiResource('pages.widgets', 'PageWidgetsController');
 Route::apiResource('pages.contexts', 'PageContextsController');
+
+Route::apiResource('categories', 'CategoriesController');
 Route::apiResource('categories.widgets', 'CategoryWidgetsController');
 Route::apiResource('categories.tariffs', 'CategoryTariffsController');
 Route::apiResource('categories.contexts', 'CategoryContextsController');

@@ -25,6 +25,9 @@ class CategoryResource extends JsonResource
             'label' => $this->label,
             'slug' => $this->slug,
             'catalog_id' => $this->catalog_id,
+            'tariffs' => TariffResource::collection($this->whenLoaded('tariffs')),
+            'contexts' => ContextResource::collection($this->whenLoaded('contexts')),
+            'widgets' => WidgetResource::collection($this->whenLoaded('widgets')),
         ];
     }
 }
