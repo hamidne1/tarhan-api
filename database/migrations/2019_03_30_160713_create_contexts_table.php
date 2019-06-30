@@ -18,7 +18,8 @@ class CreateContextsTable extends Migration {
             $table->unsignedInteger('page_id')->nullable();
             $table->unsignedInteger('category_id')->nullable();
 
-            $table->string('slug');
+            $table->string('slug')->nullable();
+            $table->string('group')->nullable();
 
             $table->string('href')->nullable();
             $table->string('icon')->nullable();
