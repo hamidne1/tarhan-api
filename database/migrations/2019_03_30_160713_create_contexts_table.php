@@ -18,11 +18,13 @@ class CreateContextsTable extends Migration {
             $table->unsignedInteger('page_id')->nullable();
             $table->unsignedInteger('category_id')->nullable();
 
-            $table->string('slug')->unique();
+            $table->string('slug');
 
             $table->string('href')->nullable();
             $table->string('icon')->nullable();
             $table->text('value');
+
+            $table->unique(['parent_id', 'page_id', 'category_id', 'slug']);
 
             $table->foreign('parent_id')
                 ->references('id')->on('contexts')
