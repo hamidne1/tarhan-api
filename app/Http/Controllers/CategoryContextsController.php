@@ -6,6 +6,7 @@ use App\Http\Resources\ContextResource;
 use App\Models\Category;
 use App\Models\Context;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CategoryContextsController extends Controller
 {
@@ -67,7 +68,7 @@ class CategoryContextsController extends Controller
     {
         $validated = $this->validate($request, [
             'parent_id' => 'nullable|exists:contexts,id',
-            'slug' => 'required|unique:contexts,slug',
+            'slug' => 'required',
             'icon' => 'nullable',
             'href' => 'nullable|url',
             'value' => 'required',

@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed discount
  * @property mixed icon
  * @property mixed category_id
+ * @property mixed options
  */
 class TariffResource extends JsonResource {
     /**
@@ -30,7 +31,7 @@ class TariffResource extends JsonResource {
             'discount' => $this->discount,
             'icon' => $this->icon,
             'category_id' => $this->category_id,
-            'options' => TariffOptionResource::collection($this->whenLoaded('options'))
+            'options' => TariffOptionResource::collection($this->options)
         ];
     }
 }
