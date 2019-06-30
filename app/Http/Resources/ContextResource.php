@@ -11,6 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property integer parent_id
  * @property integer category_id
  * @property string slug
+ * @property string group
  * @property string icon
  * @property string href
  * @property string value
@@ -36,6 +37,7 @@ class ContextResource extends JsonResource
             'parent_id' => $this->parent_id,
             'category_id' => $this->category_id,
             'slug' => $this->slug,
+            'group' => $this->group,
             'icon' => $this->icon,
             'href' => $this->href,
             'value' => $this->value,

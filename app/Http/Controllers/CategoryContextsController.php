@@ -68,10 +68,11 @@ class CategoryContextsController extends Controller
     {
         $validated = $this->validate($request, [
             'parent_id' => 'nullable|exists:contexts,id',
-            'slug' => 'required',
+            'slug' => 'string',
+            'group' => 'string',
             'icon' => 'nullable',
             'href' => 'nullable|url',
-            'value' => 'required',
+            'value' => 'string',
         ]);
 
         $context = $category->contexts()->create($validated);
