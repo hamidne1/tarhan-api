@@ -32,7 +32,7 @@ class CreateTransactionsTable extends Migration
             $table->timestamp('paid_at')->nullable();
 
             $table->foreign('receipt_id')
-                ->references('id')->on('Receipts')
+                ->references('id')->on('receipts')
                 ->onDelete('set null')->onUpdate('cascade');
         });
     }
