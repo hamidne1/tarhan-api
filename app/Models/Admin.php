@@ -2,11 +2,42 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
+
+/**
+ * Class Admin
+ *
+ * @package App\Models
+ *
+ * @property integer      $id
+ * @property string       $username
+ * @property string       $name
+ * @property string       $password
+ * @property boolean      $active
+ */
 class Admin extends Authenticatable implements JWTSubject
 {
+    use SoftDeletes;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * {@inheritDoc}
+     */
+    public $timestamps = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $hidden = [
+        'password',
+    ];
 
     #-------------------------------------##   <editor-fold desc="JWT Methods">   ##----------------------------------------------------#
 
@@ -33,24 +64,4 @@ class Admin extends Authenticatable implements JWTSubject
 
 
     # </editor-fold>
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $guarded = [
-        'id'
-    ];
-
-    /**
-     * {@inheritDoc}
-     */
-    public $timestamps = false;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $hidden = [
-        'password',
-    ];
-
 }
