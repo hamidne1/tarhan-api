@@ -19,6 +19,8 @@ class CreateAdminsTable extends Migration
             $table->string('username')->unique();
             $table->string('name');
             $table->string('password');
+            $table->boolean('active')->default(true);
+            $table->softDeletes();
 
         });
     }
